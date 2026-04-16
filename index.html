@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page Demos</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f4f5;
+      color: #111;
+      padding: 3rem 2rem;
+      min-height: 100vh;
+    }
+    header { max-width: 960px; margin: 0 auto 2.5rem; }
+    header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.4rem; }
+    header p { color: #666; font-size: 1rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .card {
+      display: block;
+      background: #fff;
+      border: 1px solid #e4e4e7;
+      border-radius: 10px;
+      padding: 1.25rem 1.25rem 1rem;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .card-industry {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #999;
+      margin-bottom: 0.4rem;
+    }
+    .card-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Landing Page Demos</h1>
+    <p>Industry-specific landing page examples.</p>
+  </header>
+  <div class="grid">
+    <a class="card" href="./fysio-landing/">
+      <div class="card-industry">Helse</div>
+      <div class="card-name">Fysioterapi</div>
+    </a>
+    <a class="card" href="./vhut-landing/">
+      <div class="card-industry">Demo</div>
+      <div class="card-name">Vhut</div>
+    </a>
+    <a class="card" href="./hgn-landing/">
+      <div class="card-industry">Demo</div>
+      <div class="card-name">HGN</div>
+    </a>
+    <a class="card" href="./advokatfirma-demo/">
+      <div class="card-industry">Juss</div>
+      <div class="card-name">Advokatfirma</div>
+    </a>
+    <a class="card" href="./tannlege-demo/">
+      <div class="card-industry">Helse</div>
+      <div class="card-name">Tannlege</div>
+    </a>
+    <a class="card" href="./vet-demo/">
+      <div class="card-industry">Helse</div>
+      <div class="card-name">Veterinær</div>
+    </a>
+    <a class="card" href="./renseri-demo/">
+      <div class="card-industry">Tjenester</div>
+      <div class="card-name">Renseri</div>
+    </a>
+    <a class="card" href="./camping-demo/">
+      <div class="card-industry">Reiseliv</div>
+      <div class="card-name">Camping</div>
+    </a>
+    <a class="card" href="./treningssenter-demo/">
+      <div class="card-industry">Helse</div>
+      <div class="card-name">Treningssenter</div>
+    </a>
+    <a class="card" href="./trelast-demo/">
+      <div class="card-industry">Bygg</div>
+      <div class="card-name">Trelast</div>
+    </a>
+    <a class="card" href="./maler-demo/">
+      <div class="card-industry">Håndverk</div>
+      <div class="card-name">Maler</div>
+    </a>
+    <a class="card" href="./idrettsanlegg-demo/">
+      <div class="card-industry">Sport</div>
+      <div class="card-name">Idrettsanlegg</div>
+    </a>
+    <a class="card" href="./idrettslag-demo/">
+      <div class="card-industry">Sport</div>
+      <div class="card-name">Idrettslag</div>
+    </a>
+    <a class="card" href="./trykk-demo/">
+      <div class="card-industry">Media</div>
+      <div class="card-name">Trykk</div>
+    </a>
+    <a class="card" href="./elektro-firma/">
+      <div class="card-industry">Håndverk</div>
+      <div class="card-name">Elektro</div>
+    </a>
+    <a class="card" href="./vvs/">
+      <div class="card-industry">Håndverk</div>
+      <div class="card-name">VVS</div>
+    </a>
+    <a class="card" href="./stranda-golf/">
+      <div class="card-industry">Sport</div>
+      <div class="card-name">Golf</div>
+    </a>
+    <a class="card" href="./os-gravferdsbyraa/">
+      <div class="card-industry">Tjenester</div>
+      <div class="card-name">Gravferdsbyrå</div>
+    </a>
+  </div>
+</body>
+</html>
