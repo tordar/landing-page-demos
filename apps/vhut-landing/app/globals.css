@@ -1,0 +1,204 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-playfair);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* iOS needs this for scroll containers to work reliably */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+:root {
+  --radius: 0.25rem;
+  /* Warm parchment */
+  --background: oklch(0.97 0.018 75);
+  --foreground: oklch(0.14 0.02 60);
+  --card: oklch(0.975 0.016 75);
+  --card-foreground: oklch(0.14 0.02 60);
+  --popover: oklch(0.975 0.016 75);
+  --popover-foreground: oklch(0.14 0.02 60);
+  /* Deep forest green */
+  --primary: oklch(0.34 0.11 148);
+  --primary-foreground: oklch(0.97 0.018 75);
+  /* Warm grey for secondary surfaces */
+  --secondary: oklch(0.935 0.022 75);
+  --secondary-foreground: oklch(0.22 0.025 60);
+  --muted: oklch(0.935 0.02 75);
+  --muted-foreground: oklch(0.46 0.025 60);
+  /* Warm amber accent */
+  --accent: oklch(0.92 0.04 75);
+  --accent-foreground: oklch(0.22 0.025 60);
+  --destructive: oklch(0.55 0.22 25);
+  --border: oklch(0.85 0.022 75);
+  --input: oklch(0.85 0.022 75);
+  --ring: oklch(0.34 0.11 148);
+  --chart-1: oklch(0.34 0.11 148);
+  --chart-2: oklch(0.64 0.13 60);
+  --chart-3: oklch(0.55 0.12 200);
+  --chart-4: oklch(0.5 0.1 280);
+  --chart-5: oklch(0.55 0.12 25);
+  --sidebar: oklch(0.955 0.02 75);
+  --sidebar-foreground: oklch(0.14 0.02 60);
+  --sidebar-primary: oklch(0.34 0.11 148);
+  --sidebar-primary-foreground: oklch(0.97 0.018 75);
+  --sidebar-accent: oklch(0.92 0.04 75);
+  --sidebar-accent-foreground: oklch(0.22 0.025 60);
+  --sidebar-border: oklch(0.85 0.022 75);
+  --sidebar-ring: oklch(0.34 0.11 148);
+}
+
+.dark {
+  --background: oklch(0.15 0.018 60);
+  --foreground: oklch(0.94 0.015 75);
+  --card: oklch(0.19 0.018 60);
+  --card-foreground: oklch(0.94 0.015 75);
+  --popover: oklch(0.19 0.018 60);
+  --popover-foreground: oklch(0.94 0.015 75);
+  --primary: oklch(0.58 0.14 148);
+  --primary-foreground: oklch(0.15 0.018 60);
+  --secondary: oklch(0.24 0.02 60);
+  --secondary-foreground: oklch(0.92 0.012 75);
+  --muted: oklch(0.24 0.02 60);
+  --muted-foreground: oklch(0.62 0.022 60);
+  --accent: oklch(0.26 0.03 60);
+  --accent-foreground: oklch(0.92 0.012 75);
+  --destructive: oklch(0.6 0.2 25);
+  --border: oklch(0.28 0.022 60);
+  --input: oklch(0.28 0.022 60);
+  --ring: oklch(0.58 0.14 148);
+  --chart-1: oklch(0.58 0.14 148);
+  --chart-2: oklch(0.62 0.14 60);
+  --chart-3: oklch(0.6 0.14 200);
+  --chart-4: oklch(0.6 0.12 280);
+  --chart-5: oklch(0.6 0.14 25);
+  --sidebar: oklch(0.17 0.018 60);
+  --sidebar-foreground: oklch(0.94 0.015 75);
+  --sidebar-primary: oklch(0.58 0.14 148);
+  --sidebar-primary-foreground: oklch(0.15 0.018 60);
+  --sidebar-accent: oklch(0.26 0.03 60);
+  --sidebar-accent-foreground: oklch(0.92 0.012 75);
+  --sidebar-border: oklch(0.28 0.022 60);
+  --sidebar-ring: oklch(0.58 0.14 148);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply min-h-dvh bg-background text-foreground;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+}
+
+/* ── Hero entrance ───────────────────────────── */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal-up {
+  animation: reveal-up 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Nav scroll shadow (CSS-only, no JS state) ──────────── */
+@keyframes nav-shadow-on-scroll {
+  from { box-shadow: none; }
+  to { box-shadow: 0 1px 4px oklch(0.14 0.02 60 / 0.08); }
+}
+
+.nav-scroll-shadow {
+  animation: nav-shadow-on-scroll linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0px 60px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-scroll-shadow {
+    animation: none;
+  }
+}
+
+/* ── Nav wordmark underline ──────────────────── */
+.nav-wordmark {
+  position: relative;
+}
+.nav-wordmark::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--primary);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-wordmark:hover::after {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-wordmark::after {
+    transition: none;
+  }
+}

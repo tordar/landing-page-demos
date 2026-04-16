@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --teal: #0d7377;
+  --teal-dark: #095456;
+  --teal-light: #e6f3f3;
+  --cream: #faf5eb;
+  --cream-dark: #f0e8d8;
+  --warm-grey: #5a5a5a;
+  --warm-grey-light: #8a8a8a;
+  --coral: #e8806a;
+  --coral-dark: #d4654e;
+  --coral-light: #fdf0ed;
+  --ink: #1a2e2e;
+  --off-white: #fefcf8;
+}
+
+@theme inline {
+  --color-teal: var(--teal);
+  --color-teal-dark: var(--teal-dark);
+  --color-teal-light: var(--teal-light);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+  --color-warm-grey: var(--warm-grey);
+  --color-warm-grey-light: var(--warm-grey-light);
+  --color-coral: var(--coral);
+  --color-coral-dark: var(--coral-dark);
+  --color-coral-light: var(--coral-light);
+  --color-ink: var(--ink);
+  --color-off-white: var(--off-white);
+  --font-heading: 'Fraunces', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--off-white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--teal-light);
+  color: var(--teal-dark);
+}
