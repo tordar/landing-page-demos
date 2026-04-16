@@ -70,7 +70,7 @@ for (const app of APPS) {
 
   // Inject after the opening brace of the exported config object.
   // Handles: const x = {, module.exports = {, export default {
-  const PATTERN = /((?:const\s+\w+\s*=|module\.exports\s*=|export\s+default)\s*\{)(\s*\n?)/
+  const PATTERN = /((?:const\s+\w+(?:\s*:[^=]*)?\s*=|module\.exports\s*=|export\s+default)\s*\{)(\s*)/
   const match = content.match(PATTERN)
 
   if (!match) {
@@ -80,7 +80,7 @@ for (const app of APPS) {
     continue
   }
 
-  content = content.replace(PATTERN, (_, prefix, ws) => `${prefix}\n${injection}`)
+  content = content.replace(PATTERN, (_, prefix, ws) => `${prefix}\n${injection}${ws}`)
   fs.writeFileSync(configFile, content)
   console.log(`✅  ${app}: patched ${path.basename(configFile)}`)
   patched++
