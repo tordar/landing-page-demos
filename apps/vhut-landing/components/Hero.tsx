@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { hero, distances } from "@/lib/content";
 
-const HERO_BG_IMAGE = "/img/premium_photo-1738597038226-798c17679c7e.avif";
+const HERO_BG_IMAGE = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/img/premium_photo-1738597038226-798c17679c7e.avif`;
 
 function HeroBackground() {
   return (
