@@ -1,0 +1,7 @@
+{
+  "name": "landing-page-demos",
+  "private": true,
+  "scripts": {
+    "build": "./build.sh"
+  }
+}
