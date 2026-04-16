@@ -51,6 +51,9 @@ for APP in "${APPS[@]}"; do
 
   mkdir -p "$ROOT_DIR/out/$APP"
   cp -r "$APP_DIR/out/." "$ROOT_DIR/out/$APP/"
+
+  # Fix absolute image paths missing basePath (next/image + unoptimized:true limitation)
+  find "$ROOT_DIR/out/$APP" -name "*.html" -print0 | xargs -0 node "$ROOT_DIR/scripts/fix-image-paths.js" "$APP"
   echo "✅  $APP done"
   cd "$ROOT_DIR"
 done
