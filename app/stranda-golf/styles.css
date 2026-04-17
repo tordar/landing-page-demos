@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: initial;
+  --color-foreground: initial;
+  --font-sans: initial;
+  --font-display: initial;
+  --font-mono: initial;
+  --color-sidebar-ring: initial;
+  --color-sidebar-border: initial;
+  --color-sidebar-accent-foreground: initial;
+  --color-sidebar-accent: initial;
+  --color-sidebar-primary-foreground: initial;
+  --color-sidebar-primary: initial;
+  --color-sidebar-foreground: initial;
+  --color-sidebar: initial;
+  --color-chart-5: initial;
+  --color-chart-4: initial;
+  --color-chart-3: initial;
+  --color-chart-2: initial;
+  --color-chart-1: initial;
+  --color-ring: initial;
+  --color-input: initial;
+  --color-border: initial;
+  --color-destructive: initial;
+  --color-accent-foreground: initial;
+  --color-accent: initial;
+  --color-muted-foreground: initial;
+  --color-muted: initial;
+  --color-secondary-foreground: initial;
+  --color-secondary: initial;
+  --color-primary-foreground: initial;
+  --color-primary: initial;
+  --color-popover-foreground: initial;
+  --color-popover: initial;
+  --color-card-foreground: initial;
+  --color-card: initial;
+  --radius-sm: initial;
+  --radius-md: initial;
+  --radius-lg: initial;
+  --radius-xl: initial;
+  --radius-2xl: initial;
+  --radius-3xl: initial;
+  --radius-4xl: initial;
+  --color-golf-green: initial;
+  --color-golf-green-light: initial;
+  --color-golf-green-muted: initial;
+  --color-golf-gold: initial;
+  --color-golf-gold-light: initial;
+  --color-golf-cream: initial;
+  --color-golf-charcoal: initial;
+}
+
+.demo-stranda-golf {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-playfair);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-golf-green: #1a3a2a;
+  --color-golf-green-light: #2a5040;
+  --color-golf-green-muted: #3d6b52;
+  --color-golf-gold: #c9a84c;
+  --color-golf-gold-light: #e2c068;
+  --color-golf-cream: #f8f5ee;
+  --color-golf-charcoal: #2d2d2d;
+}
+
+.demo-stranda-golf {
+  --background: #f8f5ee;
+  --foreground: #2d2d2d;
+  --card: #ffffff;
+  --card-foreground: #2d2d2d;
+  --popover: #ffffff;
+  --popover-foreground: #2d2d2d;
+  --primary: #1a3a2a;
+  --primary-foreground: #f8f5ee;
+  --secondary: #f0ece3;
+  --secondary-foreground: #1a3a2a;
+  --muted: #f0ece3;
+  --muted-foreground: #6b6b6b;
+  --accent: #c9a84c;
+  --accent-foreground: #1a3a2a;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #e2ddd4;
+  --input: #e2ddd4;
+  --ring: #c9a84c;
+  --radius: 0.625rem;
+  --sidebar: #f8f5ee;
+  --sidebar-foreground: #2d2d2d;
+  --sidebar-primary: #1a3a2a;
+  --sidebar-primary-foreground: #f8f5ee;
+  --sidebar-accent: #f0ece3;
+  --sidebar-accent-foreground: #1a3a2a;
+  --sidebar-border: #e2ddd4;
+  --sidebar-ring: #c9a84c;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
