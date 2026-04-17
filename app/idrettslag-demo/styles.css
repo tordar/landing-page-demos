@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --club-green: #1a6b3c;
+  --club-green-dark: #145530;
+  --club-green-light: #e8f5ee;
+  --club-gold: #d4a843;
+  --club-gold-light: #f5ecd4;
+  --charcoal: #1e1e1e;
+  --charcoal-light: #2a2a2a;
+  --warm-white: #fafaf7;
+  --cream: #f5f3ee;
+  --text-muted: #5a5a52;
+  --border-subtle: #e5e3dc;
+}
+
+@theme {
+  --color-club-green: initial;
+  --color-club-green-dark: initial;
+  --color-club-green-light: initial;
+  --color-club-gold: initial;
+  --color-club-gold-light: initial;
+  --color-charcoal: initial;
+  --color-charcoal-light: initial;
+  --color-warm-white: initial;
+  --color-cream: initial;
+  --color-text-muted: initial;
+  --color-border-subtle: initial;
+  --font-display: initial;
+  --font-body: initial;
+}
+
+.demo-idrettslag-demo {
+  --color-club-green: var(--club-green);
+  --color-club-green-dark: var(--club-green-dark);
+  --color-club-green-light: var(--club-green-light);
+  --color-club-gold: var(--club-gold);
+  --color-club-gold-light: var(--club-gold-light);
+  --color-charcoal: var(--charcoal);
+  --color-charcoal-light: var(--charcoal-light);
+  --color-warm-white: var(--warm-white);
+  --color-cream: var(--cream);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  --font-display: 'Bricolage Grotesque', serif;
+  --font-body: 'Karla', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--warm-white);
+  color: var(--charcoal);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background: var(--club-green);
+  color: white;
+}
