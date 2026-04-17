@@ -29,9 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <div className={`${manrope.variable} ${inter.variable} bg-background text-on-background font-body antialiased selection:bg-secondary/30 demo-elektro-firma`}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-      </div>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        precedence="default"
+      />
+      <Navbar />
+      <main>{children}</main>
+      <Footer />
+    </div>
   );
 }
