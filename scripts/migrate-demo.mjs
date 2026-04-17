@@ -163,18 +163,44 @@ function rewriteLayoutJsx(src, slug) {
   const bodyAttrs = bodyOpen ? bodyOpen[1] || "" : "";
 
   const classFrom = (attrs) => {
-    const m = attrs.match(/className=\{([^}]+)\}/) || attrs.match(/className=("[^"]*"|'[^']*')/);
-    if (!m) return "";
-    return m[1];
+    // Brace-balanced extractor for className={...} expressions (handles nested ${} in template literals).
+    const idx = attrs.indexOf("className=");
+    if (idx === -1) return { kind: "none" };
+    const after = attrs.slice(idx + "className=".length);
+    if (after[0] === "{") {
+      let depth = 0;
+      for (let i = 0; i < after.length; i++) {
+        const ch = after[i];
+        if (ch === "{") depth++;
+        else if (ch === "}") {
+          depth--;
+          if (depth === 0) return { kind: "expr", value: after.slice(1, i) };
+        }
+      }
+      return { kind: "none" };
+    }
+    const strMatch = after.match(/^("[^"]*"|'[^']*')/);
+    if (strMatch) return { kind: "string", value: strMatch[1].slice(1, -1) };
+    return { kind: "none" };
   };
   const htmlClass = classFrom(htmlAttrs);
   const bodyClass = classFrom(bodyAttrs);
-  const parts = [];
-  if (htmlClass) parts.push(htmlClass);
-  if (bodyClass) parts.push(bodyClass);
 
-  const exprParts = parts.map((p) => `\${${p}}`);
-  const classExpr = `\`${exprParts.join(" ")} ${wrapperClass}\``.replace(/  +/g, " ");
+  // Build a template literal: `<htmlExpr> <bodyExpr> <wrapperClass>`.
+  const toTemplateFragment = (c) => {
+    if (c.kind === "none") return null;
+    if (c.kind === "string") return c.value; // plain text, no ${}
+    // expression — if already a template literal, inline without leading/trailing backtick
+    const v = c.value.trim();
+    if (v.startsWith("`") && v.endsWith("`")) return v.slice(1, -1);
+    return "${" + v + "}";
+  };
+  const frags = [toTemplateFragment(htmlClass), toTemplateFragment(bodyClass), wrapperClass]
+    .filter(Boolean)
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const classExpr = "`" + frags + "`";
 
   let out = src;
   out = out.replace(/<html[^>]*>\s*<body[^>]*>/, `<div className={${classExpr}}>`);
