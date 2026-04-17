@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: initial;
+  --color-navy: initial;
+  --color-navy-dark: initial;
+  --color-gold: initial;
+  --color-gold-dark: initial;
+}
+
+.demo-vvs {
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+  --color-navy: #1b3463;
+  --color-navy-dark: #122448;
+  --color-gold: #ffda21;
+  --color-gold-dark: #e5c200;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: #1a1a1a;
+}
