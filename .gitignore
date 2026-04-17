@@ -2,5 +2,7 @@
 apps/*/.next/
 apps/*/out/
 apps/*/.env*.local
+.next/
 out/
+next-env.d.ts
 .DS_Store
