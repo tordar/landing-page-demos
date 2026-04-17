@@ -13,21 +13,7 @@
   --surface: #f8fafc;
 }
 
-@theme {
-  --color-slate: initial;
-  --color-slate-deep: initial;
-  --color-accent: initial;
-  --color-accent-hover: initial;
-  --color-offwhite: initial;
-  --color-grey: initial;
-  --color-grey-light: initial;
-  --color-grey-warm: initial;
-  --color-surface: initial;
-  --font-display: initial;
-  --font-body: initial;
-}
-
-.demo-idrettsanlegg-demo {
+@theme inline {
   --color-slate: var(--slate);
   --color-slate-deep: var(--slate-deep);
   --color-accent: var(--orange);

@@ -1,23 +1,6 @@
 @import "tailwindcss";
 
-@theme {
-  --color-cream: initial;
-  --color-cream-dark: initial;
-  --color-cobalt: initial;
-  --color-cobalt-light: initial;
-  --color-cobalt-dark: initial;
-  --color-warm-grey: initial;
-  --color-warm-grey-light: initial;
-  --color-terracotta: initial;
-  --color-terracotta-light: initial;
-  --color-terracotta-dark: initial;
-  --color-ink: initial;
-  --color-ink-light: initial;
-  --font-display: initial;
-  --font-body: initial;
-}
-
-.demo-maler-demo {
+@theme inline {
   --color-cream: #faf8f5;
   --color-cream-dark: #f0ece6;
   --color-cobalt: #1a3c8f;

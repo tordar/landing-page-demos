@@ -1,20 +1,6 @@
 @import "tailwindcss";
 
-@theme {
-  --color-navy: initial;
-  --color-navy-hover: initial;
-  --color-gold: initial;
-  --color-gold-light: initial;
-  --color-cream: initial;
-  --color-cream-dark: initial;
-  --color-ink: initial;
-  --color-muted: initial;
-  --color-border: initial;
-  --font-sans: initial;
-  --font-serif: initial;
-}
-
-.demo-advokatfirma-demo {
+@theme inline {
   --color-navy: #0c1a2e;
   --color-navy-hover: #162237;
   --color-gold: #a6863e;

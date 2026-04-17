@@ -28,6 +28,10 @@ const SRC_LIB_CANDIDATES = [
   path.join(ROOT, "apps", slug, "src", "lib"),
   path.join(ROOT, "apps", slug, "lib"),
 ];
+const SRC_SANITY_CANDIDATES = [
+  path.join(ROOT, "apps", slug, "src", "sanity"),
+  path.join(ROOT, "apps", slug, "sanity"),
+];
 const SRC_PUBLIC = path.join(ROOT, "apps", slug, "public");
 
 const DST_APP = path.join(ROOT, "app", slug);
@@ -67,6 +71,7 @@ for (const cands of [
   [SRC_COMPONENTS_CANDIDATES, path.join(DST_APP, "components")],
   [SRC_DATA_CANDIDATES, path.join(DST_APP, "data")],
   [SRC_LIB_CANDIDATES, path.join(DST_APP, "lib")],
+  [SRC_SANITY_CANDIDATES, path.join(DST_APP, "sanity")],
 ]) {
   const [sources, dst] = cands;
   for (const s of sources) if (copyDir(s, dst)) break;
@@ -96,11 +101,19 @@ if (fs.existsSync(stylesCss)) {
 }
 
 // 3. Rewrite asset paths in all TSX/TS/CSS files: "/foo" -> "/<slug>/foo".
+// Also rewrite "@/..." module paths so the shared root tsconfig alias
+// (`@/*` -> `./*`) resolves them inside `app/<slug>/` instead of the repo
+// root. Source code typically uses `@/components/...`, `@/lib/...`, etc.,
+// which would otherwise collide with sibling demos once consolidated.
 const prefix = `/${slug}`;
 const codeFiles = walk(DST_APP, [".tsx", ".ts", ".css"]);
 for (const file of codeFiles) {
   let content = fs.readFileSync(file, "utf-8");
   const before = content;
+  content = content.replace(
+    /(from\s+|import\s*\(\s*|import\s+)(["'])@\/(?!app\/)([^"']+)(["'])/g,
+    (_, intro, q1, rest, q2) => `${intro}${q1}@/app/${slug}/${rest}${q2}`
+  );
   // src="/..."
   content = content.replace(
     /(src|href)=("|')(\/(?!\/)[^"']+)("|')/g,
@@ -139,17 +152,18 @@ console.log(`Migrated ${slug}: ${DST_APP}`);
 
 function scopeDemoCss(css, slug) {
   const wrapper = `.demo-${slug.replace(/[^a-z0-9-]/gi, "-")}`;
+  // Normalize any `@theme { ... }` in the source to `@theme inline { ... }`.
+  // In Tailwind v4, `@theme inline` keeps the generated utility classes
+  // referencing the CSS custom properties by name (e.g. `var(--color-black)`),
+  // which means per-demo CSS variable overrides applied via `.demo-<slug>` on
+  // the wrapper element win the cascade without us having to rewrite Tailwind's
+  // utility class output per demo. The `@theme { --color-X: initial; }` +
+  // `.demo-<slug> { --color-X: ... }` split that we used previously silently
+  // removed the utility classes entirely.
   const themeRegex = /@theme(?:\s+inline)?\s*\{([\s\S]*?)\}/g;
-  css = css.replace(themeRegex, (_, body) => {
-    const props = [];
-    for (const line of body.split("\n")) {
-      const m = line.match(/^\s*(--[a-zA-Z0-9_-]+)\s*:\s*([^;]+);?\s*$/);
-      if (m) props.push({ name: m[1], value: m[2].trim() });
-    }
-    const initialBlock = props.map((p) => `  ${p.name}: initial;`).join("\n");
-    const scopedBlock = props.map((p) => `  ${p.name}: ${p.value};`).join("\n");
-    return `@theme {\n${initialBlock}\n}\n\n${wrapper} {\n${scopedBlock}\n}`;
-  });
+  css = css.replace(themeRegex, (_, body) => `@theme inline {${body}}`);
+  // Scope `:root` declarations to the demo wrapper so each demo's tokens stay
+  // isolated from every other demo's tokens (including the root page).
   css = css.replace(/(^|\})(\s*):root(\s*)\{/g, `$1$2${wrapper}$3{`);
   return css;
 }

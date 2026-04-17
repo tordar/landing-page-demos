@@ -14,23 +14,7 @@
   --border: #e5e7eb;
 }
 
-@theme {
-  --color-background: initial;
-  --color-foreground: initial;
-  --color-blue-light: initial;
-  --color-blue-mid: initial;
-  --color-green: initial;
-  --color-green-dark: initial;
-  --color-green-light: initial;
-  --color-charcoal: initial;
-  --color-charcoal-light: initial;
-  --color-warm-white: initial;
-  --color-border: initial;
-  --font-heading: initial;
-  --font-body: initial;
-}
-
-.demo-renseri-demo {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-blue-light: var(--blue-light);

@@ -1,22 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --color-charcoal: initial;
-  --color-charcoal-light: initial;
-  --color-charcoal-lighter: initial;
-  --color-red-electric: initial;
-  --color-red-hover: initial;
-  --color-red-dark: initial;
-  --color-off-white: initial;
-  --color-warm-gray: initial;
-  --color-text-muted: initial;
-  --color-text-body: initial;
-  --font-display: initial;
-  --font-body: initial;
-}
-
-.demo-treningssenter-demo {
+@theme inline {
   --color-charcoal: #1c1c1c;
   --color-charcoal-light: #2a2a2a;
   --color-charcoal-lighter: #3a3a3a;

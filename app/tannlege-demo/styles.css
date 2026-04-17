@@ -1,26 +1,6 @@
 @import "tailwindcss";
 
-@theme {
-  --color-navy: initial;
-  --color-navy-light: initial;
-  --color-sky: initial;
-  --color-sky-deep: initial;
-  --color-mist: initial;
-  --color-slate: initial;
-  --color-warm: initial;
-  --color-text: initial;
-  --color-text-mid: initial;
-  --color-text-soft: initial;
-  --color-accent: initial;
-  --color-accent-light: initial;
-  --color-border: initial;
-  --color-border-light: initial;
-  --font-display: initial;
-  --font-body: initial;
-  --ease-out-expo: initial;
-}
-
-.demo-tannlege-demo {
+@theme inline {
   --color-navy: oklch(0.22 0.05 250);
   --color-navy-light: oklch(0.30 0.05 250);
   --color-sky: oklch(0.94 0.02 230);

@@ -13,21 +13,7 @@
   --color-text-muted: #6b5e52;
 }
 
-@theme {
-  --color-wood: initial;
-  --color-wood-light: initial;
-  --color-white: initial;
-  --color-orange: initial;
-  --color-orange-dark: initial;
-  --color-stone: initial;
-  --color-stone-dark: initial;
-  --color-text: initial;
-  --color-text-muted: initial;
-  --font-heading: initial;
-  --font-body: initial;
-}
-
-.demo-trelast-demo {
+@theme inline {
   --color-wood: var(--color-wood);
   --color-wood-light: var(--color-wood-light);
   --color-white: var(--color-white);

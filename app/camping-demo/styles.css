@@ -1,14 +1,6 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: initial;
-  --color-secondary: initial;
-  --color-accent: initial;
-  --color-light: initial;
-  --color-surface: initial;
-}
-
-.demo-camping-demo {
+@theme inline {
   --color-primary: #1a365d;
   --color-secondary: #2b6cb0;
   --color-accent: #f6ad55;

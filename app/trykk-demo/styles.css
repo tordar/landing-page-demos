@@ -9,18 +9,7 @@
   --grey-dark: #333333;
 }
 
-@theme {
-  --color-black: initial;
-  --color-yellow: initial;
-  --color-white: initial;
-  --color-grey: initial;
-  --color-grey-light: initial;
-  --color-grey-dark: initial;
-  --font-display: initial;
-  --font-body: initial;
-}
-
-.demo-trykk-demo {
+@theme inline {
   --color-black: var(--black);
   --color-yellow: var(--yellow);
   --color-white: var(--white);

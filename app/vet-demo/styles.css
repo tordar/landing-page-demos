@@ -16,24 +16,7 @@
   --off-white: #fefcf8;
 }
 
-@theme {
-  --color-teal: initial;
-  --color-teal-dark: initial;
-  --color-teal-light: initial;
-  --color-cream: initial;
-  --color-cream-dark: initial;
-  --color-warm-grey: initial;
-  --color-warm-grey-light: initial;
-  --color-coral: initial;
-  --color-coral-dark: initial;
-  --color-coral-light: initial;
-  --color-ink: initial;
-  --color-off-white: initial;
-  --font-heading: initial;
-  --font-body: initial;
-}
-
-.demo-vet-demo {
+@theme inline {
   --color-teal: var(--teal);
   --color-teal-dark: var(--teal-dark);
   --color-teal-light: var(--teal-light);

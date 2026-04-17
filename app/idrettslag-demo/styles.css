@@ -15,23 +15,7 @@
   --border-subtle: #e5e3dc;
 }
 
-@theme {
-  --color-club-green: initial;
-  --color-club-green-dark: initial;
-  --color-club-green-light: initial;
-  --color-club-gold: initial;
-  --color-club-gold-light: initial;
-  --color-charcoal: initial;
-  --color-charcoal-light: initial;
-  --color-warm-white: initial;
-  --color-cream: initial;
-  --color-text-muted: initial;
-  --color-border-subtle: initial;
-  --font-display: initial;
-  --font-body: initial;
-}
-
-.demo-idrettslag-demo {
+@theme inline {
   --color-club-green: var(--club-green);
   --color-club-green-dark: var(--club-green-dark);
   --color-club-green-light: var(--club-green-light);
