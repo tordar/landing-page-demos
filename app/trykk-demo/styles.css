@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  --black: #111111;
+  --yellow: #f5c518;
+  --white: #f8f8f6;
+  --grey: #888888;
+  --grey-light: #e8e8e6;
+  --grey-dark: #333333;
+}
+
+@theme {
+  --color-black: initial;
+  --color-yellow: initial;
+  --color-white: initial;
+  --color-grey: initial;
+  --color-grey-light: initial;
+  --color-grey-dark: initial;
+  --font-display: initial;
+  --font-body: initial;
+}
+
+.demo-trykk-demo {
+  --color-black: var(--black);
+  --color-yellow: var(--yellow);
+  --color-white: var(--white);
+  --color-grey: var(--grey);
+  --color-grey-light: var(--grey-light);
+  --color-grey-dark: var(--grey-dark);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-dm-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--black);
+}
+
+/* Horizontal rule with editorial feel */
+.rule {
+  border: none;
+  border-top: 1px solid var(--grey-light);
+}
+
+.rule-thick {
+  border: none;
+  border-top: 3px solid var(--black);
+}
+
+/* Stagger animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
