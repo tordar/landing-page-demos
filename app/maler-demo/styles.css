@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: initial;
+  --color-cream-dark: initial;
+  --color-cobalt: initial;
+  --color-cobalt-light: initial;
+  --color-cobalt-dark: initial;
+  --color-warm-grey: initial;
+  --color-warm-grey-light: initial;
+  --color-terracotta: initial;
+  --color-terracotta-light: initial;
+  --color-terracotta-dark: initial;
+  --color-ink: initial;
+  --color-ink-light: initial;
+  --font-display: initial;
+  --font-body: initial;
+}
+
+.demo-maler-demo {
+  --color-cream: #faf8f5;
+  --color-cream-dark: #f0ece6;
+  --color-cobalt: #1a3c8f;
+  --color-cobalt-light: #2a52b0;
+  --color-cobalt-dark: #0f2560;
+  --color-warm-grey: #6b6b6b;
+  --color-warm-grey-light: #9a9a9a;
+  --color-terracotta: #c0583a;
+  --color-terracotta-light: #d4714f;
+  --color-terracotta-dark: #a04528;
+  --color-ink: #1a1a1e;
+  --color-ink-light: #2d2d33;
+  --font-display: var(--font-barlow);
+  --font-body: var(--font-dm-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll-triggered fade-in */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.stagger > .fade-up:nth-child(1) { transition-delay: 0ms; }
+.stagger > .fade-up:nth-child(2) { transition-delay: 80ms; }
+.stagger > .fade-up:nth-child(3) { transition-delay: 160ms; }
+.stagger > .fade-up:nth-child(4) { transition-delay: 240ms; }
+.stagger > .fade-up:nth-child(5) { transition-delay: 320ms; }
+.stagger > .fade-up:nth-child(6) { transition-delay: 400ms; }
+
+/* Paint stroke decorative element */
+.paint-stroke {
+  position: relative;
+}
+
+.paint-stroke::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    var(--color-terracotta) 0%,
+    var(--color-terracotta-light) 40%,
+    transparent 100%
+  );
+  border-radius: 3px;
+  opacity: 0.7;
+}
+
+/* Selection color */
+::selection {
+  background: color-mix(in oklch, var(--color-cobalt), transparent 70%);
+}
