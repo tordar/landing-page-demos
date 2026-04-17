@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-container-highest: initial;
+  --color-surface: initial;
+  --color-tertiary: initial;
+  --color-surface-container: initial;
+  --color-primary-fixed: initial;
+  --color-on-tertiary-container: initial;
+  --color-surface-variant: initial;
+  --color-tertiary-container: initial;
+  --color-inverse-surface: initial;
+  --color-on-background: initial;
+  --color-on-secondary: initial;
+  --color-surface-bright: initial;
+  --color-primary-fixed-dim: initial;
+  --color-secondary-fixed: initial;
+  --color-inverse-on-surface: initial;
+  --color-on-primary: initial;
+  --color-outline: initial;
+  --color-on-secondary-container: initial;
+  --color-error-container: initial;
+  --color-on-error: initial;
+  --color-on-surface-variant: initial;
+  --color-primary-container: initial;
+  --color-background: initial;
+  --color-on-primary-fixed: initial;
+  --color-on-tertiary: initial;
+  --color-on-primary-fixed-variant: initial;
+  --color-on-tertiary-fixed-variant: initial;
+  --color-surface-container-low: initial;
+  --color-outline-variant: initial;
+  --color-on-primary-container: initial;
+  --color-primary: initial;
+  --color-on-secondary-fixed: initial;
+  --color-secondary: initial;
+  --color-on-tertiary-fixed: initial;
+  --color-surface-container-high: initial;
+  --color-on-surface: initial;
+  --color-secondary-fixed-dim: initial;
+  --color-inverse-primary: initial;
+  --color-tertiary-fixed: initial;
+  --color-surface-tint: initial;
+  --color-on-error-container: initial;
+  --color-secondary-container: initial;
+  --color-on-secondary-fixed-variant: initial;
+  --color-error: initial;
+  --color-surface-container-lowest: initial;
+  --color-surface-dim: initial;
+  --color-tertiary-fixed-dim: initial;
+  --font-headline: initial;
+  --font-body: initial;
+  --radius-sm: initial;
+  --radius-lg: initial;
+  --radius-xl: initial;
+  --radius-2xl: initial;
+}
+
+.demo-os-gravferdsbyraa {
+  --color-surface-container-highest: #f2e0c6;
+  --color-surface: #fff8f3;
+  --color-tertiary: #b22b1d;
+  --color-surface-container: #feebd1;
+  --color-primary-fixed: #f4dfc7;
+  --color-on-tertiary-container: #99180e;
+  --color-surface-variant: #f2e0c6;
+  --color-tertiary-container: #ffa99b;
+  --color-inverse-surface: #392f1e;
+  --color-on-background: #231a0a;
+  --color-on-secondary: #ffffff;
+  --color-surface-bright: #fff8f3;
+  --color-primary-fixed-dim: #d7c4ac;
+  --color-secondary-fixed: #e4e2e1;
+  --color-inverse-on-surface: #ffeed7;
+  --color-on-primary: #ffffff;
+  --color-outline: #7e766c;
+  --color-on-secondary-container: #656464;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-surface-variant: #4d463e;
+  --color-primary-container: #cfbca5;
+  --color-background: #fff8f3;
+  --color-on-primary-fixed: #241a0b;
+  --color-on-tertiary: #ffffff;
+  --color-on-primary-fixed-variant: #524533;
+  --color-on-tertiary-fixed-variant: #8f0f07;
+  --color-surface-container-low: #fff2e1;
+  --color-outline-variant: #cfc5ba;
+  --color-on-primary-container: #594b39;
+  --color-primary: #6b5c49;
+  --color-on-secondary-fixed: #1b1c1c;
+  --color-secondary: #5f5e5e;
+  --color-on-tertiary-fixed: #410000;
+  --color-surface-container-high: #f8e6cc;
+  --color-on-surface: #231a0a;
+  --color-secondary-fixed-dim: #c8c6c6;
+  --color-inverse-primary: #d7c4ac;
+  --color-tertiary-fixed: #ffdad4;
+  --color-surface-tint: #6b5c49;
+  --color-on-error-container: #93000a;
+  --color-secondary-container: #e4e2e1;
+  --color-on-secondary-fixed-variant: #474747;
+  --color-error: #ba1a1a;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-dim: #e9d8be;
+  --color-tertiary-fixed-dim: #ffb4a8;
+  --font-headline: var(--font-noto-serif);
+  --font-body: var(--font-inter);
+  --radius-sm: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.75rem;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-background);
+}
+
+::selection {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
