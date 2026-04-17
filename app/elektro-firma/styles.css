@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  --font-headline: initial;
+  --font-body: initial;
+  --font-label: initial;
+  --color-primary: initial;
+  --color-primary-container: initial;
+  --color-primary-fixed: initial;
+  --color-primary-fixed-dim: initial;
+  --color-on-primary: initial;
+  --color-on-primary-container: initial;
+  --color-on-primary-fixed: initial;
+  --color-on-primary-fixed-variant: initial;
+  --color-secondary: initial;
+  --color-secondary-container: initial;
+  --color-secondary-fixed: initial;
+  --color-secondary-fixed-dim: initial;
+  --color-on-secondary: initial;
+  --color-on-secondary-container: initial;
+  --color-on-secondary-fixed: initial;
+  --color-on-secondary-fixed-variant: initial;
+  --color-tertiary: initial;
+  --color-tertiary-container: initial;
+  --color-tertiary-fixed: initial;
+  --color-tertiary-fixed-dim: initial;
+  --color-on-tertiary: initial;
+  --color-on-tertiary-container: initial;
+  --color-on-tertiary-fixed: initial;
+  --color-on-tertiary-fixed-variant: initial;
+  --color-surface: initial;
+  --color-surface-bright: initial;
+  --color-surface-dim: initial;
+  --color-surface-container: initial;
+  --color-surface-container-low: initial;
+  --color-surface-container-high: initial;
+  --color-surface-container-highest: initial;
+  --color-surface-container-lowest: initial;
+  --color-surface-variant: initial;
+  --color-surface-tint: initial;
+  --color-background: initial;
+  --color-on-background: initial;
+  --color-on-surface: initial;
+  --color-on-surface-variant: initial;
+  --color-outline: initial;
+  --color-outline-variant: initial;
+  --color-error: initial;
+  --color-error-container: initial;
+  --color-on-error: initial;
+  --color-on-error-container: initial;
+  --color-inverse-surface: initial;
+  --color-inverse-on-surface: initial;
+  --color-inverse-primary: initial;
+}
+
+.demo-elektro-firma {
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+  --color-primary: #000000;
+  --color-primary-container: #0f1c2c;
+  --color-primary-fixed: #d6e4f9;
+  --color-primary-fixed-dim: #bac8dc;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #778598;
+  --color-on-primary-fixed: #0f1c2c;
+  --color-on-primary-fixed-variant: #3a4859;
+  --color-secondary: #0059bb;
+  --color-secondary-container: #0070ea;
+  --color-secondary-fixed: #d8e2ff;
+  --color-secondary-fixed-dim: #adc7ff;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #fefcff;
+  --color-on-secondary-fixed: #001a41;
+  --color-on-secondary-fixed-variant: #004493;
+  --color-tertiary: #705d00;
+  --color-tertiary-container: #c9a900;
+  --color-tertiary-fixed: #ffe16d;
+  --color-tertiary-fixed-dim: #e9c400;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #4c3e00;
+  --color-on-tertiary-fixed: #221b00;
+  --color-on-tertiary-fixed-variant: #544600;
+  --color-surface: #f9f9ff;
+  --color-surface-bright: #f9f9ff;
+  --color-surface-dim: #cfdaf6;
+  --color-surface-container: #e8edff;
+  --color-surface-container-low: #f1f3ff;
+  --color-surface-container-high: #e0e8ff;
+  --color-surface-container-highest: #d7e2ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-variant: #d7e2ff;
+  --color-surface-tint: #525f71;
+  --color-background: #f9f9ff;
+  --color-on-background: #101b30;
+  --color-on-surface: #101b30;
+  --color-on-surface-variant: #44474c;
+  --color-outline: #74777d;
+  --color-outline-variant: #c4c6cc;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+  --color-inverse-surface: #263046;
+  --color-inverse-on-surface: #edf0ff;
+  --color-inverse-primary: #bac8dc;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+.icon-inline {
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
