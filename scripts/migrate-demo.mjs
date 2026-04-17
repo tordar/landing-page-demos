@@ -202,7 +202,9 @@ function rewriteLayoutJsx(src, slug) {
     .trim();
   const classExpr = "`" + frags + "`";
 
-  let out = src;
+  // Strip any <head>...</head> block (layout should have no <head> — metadata handles it).
+  let out = src.replace(/<head[^>]*>[\s\S]*?<\/head>/g, "");
+  // Replace <html ...>...<body ...> (allowing whitespace in between) with wrapper <div>.
   out = out.replace(/<html[^>]*>\s*<body[^>]*>/, `<div className={${classExpr}}>`);
   out = out.replace(/<\/body>\s*<\/html>/, `</div>`);
   return out;
