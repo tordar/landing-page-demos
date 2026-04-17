@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Phone,
   Clock,
@@ -63,6 +64,8 @@ const team = [
     specialty: "Bløtdelskirurgi, indremedisin",
     years: "18 års erfaring",
     color: "bg-teal",
+    photo:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80&auto=format&fit=crop",
   },
   {
     name: "Dr. Erik Solheim",
@@ -70,6 +73,8 @@ const team = [
     specialty: "Ortopedi, bildediagnostikk",
     years: "12 års erfaring",
     color: "bg-coral",
+    photo:
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=80&auto=format&fit=crop",
   },
   {
     name: "Dr. Marte Ødegård",
@@ -77,6 +82,8 @@ const team = [
     specialty: "Tannhelse, katt & smådyr",
     years: "9 års erfaring",
     color: "bg-teal-dark",
+    photo:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80&auto=format&fit=crop",
   },
   {
     name: "Silje Haugen",
@@ -84,6 +91,8 @@ const team = [
     specialty: "Anestesi, postoperativ pleie",
     years: "7 års erfaring",
     color: "bg-warm-grey",
+    photo:
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&q=80&auto=format&fit=crop",
   },
 ];
 
@@ -365,18 +374,13 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-5">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-teal-light">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative">
-                    <div className="w-48 h-48 rounded-full bg-teal/10" />
-                    <div className="absolute top-6 left-12 w-32 h-32 rounded-full bg-coral/15" />
-                    <div className="absolute -bottom-4 -right-4 w-24 h-24 rounded-full bg-teal/20" />
-                    <Heart
-                      size={64}
-                      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-teal"
-                      strokeWidth={1.2}
-                    />
-                  </div>
-                </div>
+                <Image
+                  src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=1200&q=80&auto=format&fit=crop"
+                  alt="Veterinær undersøker en hund på klinikken"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
               </div>
 
               <div>
@@ -443,14 +447,16 @@ export default function Home() {
               {team.map((member) => (
                 <div key={member.name} className="group">
                   <div className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-5 bg-cream">
-                    <div
-                      className={`absolute bottom-0 left-0 right-0 h-2/3 ${member.color} opacity-[0.07]`}
+                    <Image
+                      src={member.photo}
+                      alt={`Portrett av ${member.name}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div
-                        className={`w-20 h-20 rounded-full ${member.color} opacity-20`}
-                      />
-                    </div>
+                    <div
+                      className={`absolute inset-0 ${member.color} opacity-[0.08] mix-blend-multiply`}
+                    />
                     <span className="absolute bottom-4 left-4 right-4 text-xs font-medium text-warm-grey bg-off-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-center">
                       {member.years}
                     </span>
