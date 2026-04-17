@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: initial;
+  --color-navy-hover: initial;
+  --color-gold: initial;
+  --color-gold-light: initial;
+  --color-cream: initial;
+  --color-cream-dark: initial;
+  --color-ink: initial;
+  --color-muted: initial;
+  --color-border: initial;
+  --font-sans: initial;
+  --font-serif: initial;
+}
+
+.demo-advokatfirma-demo {
+  --color-navy: #0c1a2e;
+  --color-navy-hover: #162237;
+  --color-gold: #a6863e;
+  --color-gold-light: #c9a84c;
+  --color-cream: #f6f3ec;
+  --color-cream-dark: #ece8df;
+  --color-ink: #1c1b29;
+  --color-muted: #7e7a85;
+  --color-border: #ddd8cc;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #f6f3ec;
+  color: #1c1b29;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fade-up-d1 {
+  animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+.fade-up-d2 {
+  animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+.fade-up-d3 {
+  animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
+}
+.fade-up-d4 {
+  animation: fadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.52s both;
+}
+
+/* ── Form resets ── */
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230c1a2e' stroke-opacity='.4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem !important;
+}
