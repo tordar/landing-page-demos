@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fafbfc;
+  --foreground: #2e2e2e;
+  --blue-light: #dbeafe;
+  --blue-mid: #93c5fd;
+  --green: #16a34a;
+  --green-dark: #15803d;
+  --green-light: #dcfce7;
+  --charcoal: #2e2e2e;
+  --charcoal-light: #4a4a4a;
+  --warm-white: #f8f9fa;
+  --border: #e5e7eb;
+}
+
+@theme {
+  --color-background: initial;
+  --color-foreground: initial;
+  --color-blue-light: initial;
+  --color-blue-mid: initial;
+  --color-green: initial;
+  --color-green-dark: initial;
+  --color-green-light: initial;
+  --color-charcoal: initial;
+  --color-charcoal-light: initial;
+  --color-warm-white: initial;
+  --color-border: initial;
+  --font-heading: initial;
+  --font-body: initial;
+}
+
+.demo-renseri-demo {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-blue-light: var(--blue-light);
+  --color-blue-mid: var(--blue-mid);
+  --color-green: var(--green);
+  --color-green-dark: var(--green-dark);
+  --color-green-light: var(--green-light);
+  --color-charcoal: var(--charcoal);
+  --color-charcoal-light: var(--charcoal-light);
+  --color-warm-white: var(--warm-white);
+  --color-border: var(--border);
+  --font-heading: var(--font-plus-jakarta);
+  --font-body: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
