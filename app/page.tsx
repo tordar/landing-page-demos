@@ -2,7 +2,6 @@ import Link from "next/link";
 
 const demos = [
   { slug: "fysio-landing", industry: "Helse", name: "Fysioterapi" },
-  { slug: "vhut-landing", industry: "Demo", name: "Vhut" },
   { slug: "hgn-landing", industry: "Demo", name: "HGN" },
   { slug: "advokatfirma-demo", industry: "Juss", name: "Advokatfirma" },
   { slug: "tannlege-demo", industry: "Helse", name: "Tannlege" },

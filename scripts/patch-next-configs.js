@@ -3,7 +3,6 @@ const path = require('path')
 
 const APPS = [
   'fysio-landing',
-  'vhut-landing',
   'hgn-landing',
   'advokatfirma-demo',
   'tannlege-demo',
