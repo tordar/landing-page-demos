@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: initial;
+  --color-secondary: initial;
+  --color-accent: initial;
+  --color-light: initial;
+  --color-surface: initial;
+}
+
+.demo-camping-demo {
+  --color-primary: #1a365d;
+  --color-secondary: #2b6cb0;
+  --color-accent: #f6ad55;
+  --color-light: #f7fafc;
+  --color-surface: #ebf8ff;
+}
+
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: var(--color-primary);
+}
