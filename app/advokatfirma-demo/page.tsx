@@ -1,819 +1,1001 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  type ElementType,
+  type ReactNode,
+} from "react";
 
 // ── Data ──────────────────────────────────────────────────────────────
+
+const NAV = [
+  { id: "tjenester", label: "Tjenester" },
+  { id: "prosess", label: "Prosess" },
+  { id: "om", label: "Om" },
+  { id: "resultater", label: "Resultater" },
+  { id: "kontakt", label: "Kontakt" },
+];
 
 const SERVICES = [
   {
     num: "01",
     title: "Yrkesskade",
     sub: "Arbeidsulykker og yrkessykdommer",
-    desc: "Ble du skadet på jobb eller utviklet sykdom av arbeidsmiljøet? Vi hjelper deg med å sikre full erstatning fra arbeidsgiver og yrkesskadeforsikringen.",
+    desc: "Ble du skadet på jobb eller utviklet sykdom av arbeidsmiljøet? Vi sikrer full erstatning fra arbeidsgiver og yrkesskadeforsikringen — og utfordrer avslag hele veien til Trygderetten.",
+    bullets: [
+      "Menerstatning og tap",
+      "Godkjenning hos NAV",
+      "Klage og Trygderetten",
+      "Forsikringsoppgjør",
+    ],
+    meta: "Typisk varighet 6–18 mnd",
   },
   {
     num: "02",
     title: "Trafikkskade",
     sub: "Erstatning etter trafikkulykker",
-    desc: "Personskade etter trafikkulykke gir deg rett på erstatning. Vi fører saken mot forsikringsselskapet og sikrer at du får det du faktisk har krav på.",
+    desc: "Personskade etter trafikkulykke gir deg rett på full erstatning. Vi fører saken mot forsikringsselskapet og sikrer at beregningene dekker alt — også fremtidige tap.",
+    bullets: [
+      "Bilansvarsloven",
+      "Inntektstap",
+      "Varig medisinsk invaliditet",
+      "Forlik eller rettssak",
+    ],
+    meta: "Typisk varighet 9–24 mnd",
   },
   {
     num: "03",
     title: "Familierett",
-    sub: "Skilsmisse, barnefordeling og arv",
-    desc: "Juridisk bistand i de vanskeligste livssituasjonene – vi sikrer dine interesser og barnets beste med fasthet og empati.",
+    sub: "Skilsmisse, barnefordeling, arv",
+    desc: "Juridisk bistand i de vanskeligste livssituasjonene — med fasthet der det trengs, og empati der det monner. Vi ivaretar både dine interesser og barnets beste.",
+    bullets: [
+      "Ekteskapsloven",
+      "Foreldreansvar",
+      "Samværsordning",
+      "Skifte og arv",
+    ],
+    meta: "Ofte meglingsbasert",
   },
   {
     num: "04",
     title: "Arbeidsrett",
-    sub: "Oppsigelse, diskriminering og tvister",
-    desc: "Urettmessig oppsagt eller diskriminert på arbeidsplassen? Vi kjenner arbeidsmiljøloven og kjemper for dine rettigheter.",
+    sub: "Oppsigelse, diskriminering, tvister",
+    desc: "Urettmessig oppsagt eller diskriminert på arbeidsplassen? Vi kjenner arbeidsmiljøloven godt, og har ført saker for både ansatte og mellomledere i privat og offentlig sektor.",
+    bullets: ["Oppsigelsesvern", "Drøftingsmøter", "Sluttavtaler", "Varsling"],
+    meta: "Ofte forhandlingsløsninger",
   },
   {
     num: "05",
     title: "NAV-saker",
-    sub: "Klager og anker mot NAV",
-    desc: "NAV-systemet er komplekst og regelverket krevende. Vi hjelper deg gjennom klageprosessen og representerer deg i Trygderetten.",
+    sub: "Klager, anker, Trygderetten",
+    desc: "NAV-systemet er komplekst og regelverket krevende. Vi tar deg gjennom klageprosessen — fra første vedtak til Trygderetten — og bygger saken på det som faktisk teller.",
+    bullets: [
+      "Uføretrygd",
+      "Arbeidsavklaringspenger",
+      "Dagpenger",
+      "Klageordning",
+    ],
+    meta: "Fri rettshjelp ofte aktuelt",
   },
   {
     num: "06",
     title: "Forsikringssaker",
     sub: "Tvister med forsikringsselskaper",
-    desc: "Forsikringsselskapet avviser kravet ditt? Vi kjenner avtalevilkårene og kjemper for din rett til full dekning.",
+    desc: "Selskapet avviser, underbetaler eller trenerer? Vi kjenner avtalevilkårene, bevisbyrden og forhandlingsteknikken — og bringer saken inn for Finansklagenemnda når det trengs.",
+    bullets: [
+      "Personforsikring",
+      "Innbo og eiendom",
+      "Reise og ulykke",
+      "Finansklagenemnda",
+    ],
+    meta: "No cure, no pay ofte mulig",
+  },
+];
+
+const RESULTS = [
+  {
+    cat: "Yrkesskade · 2024",
+    amount: "2,8 MNOK",
+    desc: "Full erstatning etter syv års tvist med forsikringsselskapet om varig medisinsk invaliditet.",
+    case: "Sak nr. 24-0142",
+    venue: "Oslo tingrett",
+  },
+  {
+    cat: "Trafikkskade · 2023",
+    amount: "4,1 MNOK",
+    desc: "Forlik tre uker før hovedforhandling etter motpartens førstetilbud på 900 000 kroner.",
+    case: "Sak nr. 23-0881",
+    venue: "Borgarting",
+  },
+  {
+    cat: "NAV-sak · 2024",
+    amount: "Medhold",
+    desc: "Omgjøring i Trygderetten — uføretrygd innvilget etter tre tidligere avslag over fire år.",
+    case: "Sak nr. TR-24-1012",
+    venue: "Trygderetten",
   },
 ];
 
 const TESTIMONIALS = [
   {
-    quote:
-      "Etter mange avslag fra NAV ga jeg opp håpet. Erik tok saken min og vi vant i Trygderetten. Uten ham hadde jeg aldri fått uføretrygden jeg hadde krav på.",
+    q: "Etter mange avslag fra NAV ga jeg opp håpet. Holm tok saken og vi vant i Trygderetten. Uten ham hadde jeg aldri fått uføretrygden jeg hadde krav på.",
     name: "Ingrid T.",
-    location: "Bærum",
+    loc: "Bærum",
+    area: "NAV-sak",
   },
   {
-    quote:
-      "Grundig, tilgjengelig og ærlig. Fikk hjelp med en komplisert yrkesskade – Erik var alltid klar over statusen i saken.",
+    q: "Grundig, tilgjengelig og ærlig. Fikk hjelp med en komplisert yrkesskade — jeg visste til enhver tid hvor vi sto og hva neste steg var.",
     name: "Lars H.",
-    location: "Oslo",
+    loc: "Oslo",
+    area: "Yrkesskade",
   },
   {
-    quote:
-      "Rask respons og tydelig kommunikasjon gjennom hele prosessen. Har allerede anbefalt Holm Advokatkontor til to kolleger.",
+    q: "Rask respons og tydelig kommunikasjon gjennom hele prosessen. Har allerede anbefalt Holm til to kolleger.",
     name: "Mohammed A.",
-    location: "Oslo",
+    loc: "Oslo",
+    area: "Arbeidsrett",
   },
   {
-    quote:
-      "Bistod oss i en krevende skilsmissesak med barnefordelingsspørsmål. Alltid tilgjengelig og genuint opptatt av utfallet for familien.",
+    q: "Bistod oss i en krevende skilsmissesak. Alltid tilgjengelig, og genuint opptatt av utfallet for familien — ikke bare juridisk, men menneskelig.",
     name: "Kari L.",
-    location: "Lørenskog",
+    loc: "Lørenskog",
+    area: "Familierett",
   },
 ];
 
-const NAV_ITEMS = [
-  { label: "Tjenester", href: "#tjenester" },
-  { label: "Om oss", href: "#om-oss" },
-  { label: "Klienter sier", href: "#referanser" },
-  { label: "Kontakt", href: "#kontakt" },
+const PROCESS = [
+  {
+    n: "01",
+    t: "Første samtale",
+    d: "30 min, gratis. Vi vurderer om saken har grunnlag — og om det er vi som bør ta den.",
+  },
+  {
+    n: "02",
+    t: "Dokumentgjennomgang",
+    d: "Vi går gjennom vedtak, journaler og korrespondanse. Du får en skriftlig vurdering.",
+  },
+  {
+    n: "03",
+    t: "Strategi og forhandling",
+    d: "Klage, krav eller forliksforhandling. Du får klare alternativer, med kostnader og sannsynlighet.",
+  },
+  {
+    n: "04",
+    t: "Rettssak om nødvendig",
+    d: "Vi fører saken i retten eller i Trygderetten. Du møter samme advokat hele veien.",
+  },
 ];
 
-// ── Stars ─────────────────────────────────────────────────────────────
-function Stars({ count = 5, size = "sm" }: { count?: number; size?: "sm" | "xs" }) {
-  const s = size === "xs" ? "w-3 h-3" : "w-4 h-4";
+// ── Hooks ─────────────────────────────────────────────────────────────
+
+function useScrollSpy(ids: string[]) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    const compute = () => {
+      const anchor = window.scrollY + window.innerHeight * 0.25;
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        if (top <= anchor) current = id;
+      }
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 20
+      ) {
+        current = ids[ids.length - 1];
+      }
+      setActive(current);
+    };
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, [ids]);
+  return active;
+}
+
+// ── Components ────────────────────────────────────────────────────────
+
+type RevealProps = {
+  children: ReactNode;
+  delay?: number;
+  as?: ElementType;
+  className?: string;
+};
+
+function Reveal({ children, delay = 0, as: Tag = "div", className = "" }: RevealProps) {
+  const ref = useRef<HTMLElement | null>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setShown(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "-5% 0px -5% 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
   return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: count }).map((_, i) => (
-        <svg key={i} className={`${s} text-[#a6863e]`} fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
+    <Tag
+      ref={ref}
+      className={`reveal ${shown ? "in" : ""} ${delay ? `d${delay}` : ""} ${className}`}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function ArrowIcon({ className = "arrow" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 14 14"
+      width={14}
+      height={14}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.4}
+      aria-hidden="true"
+    >
+      <path d="M3 7h8m-3-3 3 3-3 3" />
+    </svg>
+  );
+}
+
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const active = useScrollSpy(NAV.map((n) => n.id));
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <>
+      <header className={`nav ${scrolled ? "scrolled" : ""}`}>
+        <div className="wrap nav-inner">
+          <a href="#top" className="logo">
+            <span className="logo-mark">Holm</span>
+            <span className="logo-sub">Advokatkontor&nbsp;· Oslo</span>
+          </a>
+          <nav className="nav-links">
+            {NAV.map((n) => (
+              <a
+                key={n.id}
+                href={`#${n.id}`}
+                className={active === n.id ? "active" : ""}
+              >
+                {n.label}
+              </a>
+            ))}
+          </nav>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <a href="#kontakt" className="btn btn-primary nav-cta">
+              Book konsultasjon
+              <ArrowIcon />
+            </a>
+            <button
+              className="hamb"
+              onClick={() => setOpen((o) => !o)}
+              aria-label="Meny"
+            >
+              <span />
+            </button>
+          </div>
+        </div>
+      </header>
+      <div className={`mmenu ${open ? "open" : ""}`}>
+        {NAV.map((n) => (
+          <a key={n.id} href={`#${n.id}`} onClick={() => setOpen(false)}>
+            {n.label}
+          </a>
+        ))}
+        <a
+          href="#kontakt"
+          className="btn btn-primary"
+          onClick={() => setOpen(false)}
+        >
+          Book konsultasjon
+        </a>
+      </div>
+    </>
+  );
+}
+
+function Hero() {
+  return (
+    <section id="top" className="hero">
+      <div className="wrap">
+        <div className="ambient">H</div>
+        <Reveal>
+          <span className="availability">
+            <span className="dot" />
+            Tar imot nye saker — svar innen én virkedag
+          </span>
+        </Reveal>
+        <Reveal delay={1}>
+          <h1 className="display">
+            Juridisk bistand
+            <br />
+            der det <em>virkelig</em>
+            <br />
+            betyr noe.
+          </h1>
+        </Reveal>
+        <Reveal delay={2}>
+          <p className="hero-sub">
+            Holm Advokatkontor representerer privatpersoner i saker mot
+            forsikringsselskaper, arbeidsgivere og NAV. Samme advokat fra første
+            samtale til saken er avsluttet — og alltid en gratis, uforpliktende
+            vurdering først.
+          </p>
+        </Reveal>
+        <Reveal delay={3}>
+          <div className="hero-actions">
+            <a href="#kontakt" className="btn btn-primary">
+              Book gratis konsultasjon
+              <ArrowIcon />
+            </a>
+            <a href="#tjenester" className="btn btn-ghost">
+              Se tjenester
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={4}>
+          <div className="hero-meta">
+            <div>
+              <div className="k">Etablert</div>
+              <div className="v num">2006</div>
+            </div>
+            <div>
+              <div className="k">Saker ført</div>
+              <div className="v num">
+                1 000<small>+</small>
+              </div>
+            </div>
+            <div>
+              <div className="k">Vurdering</div>
+              <div className="v num">
+                5,0<small>/5 · 47</small>
+              </div>
+            </div>
+            <div>
+              <div className="k">Første møte</div>
+              <div className="v">Gratis</div>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function Trust() {
+  return (
+    <div className="trust">
+      <div className="wrap trust-inner">
+        <div className="trust-chip">Medlem · Advokatforeningen</div>
+        <div className="trust-chip">Møterett · Høyesterett</div>
+        <div className="trust-chip">Spesialisering · Personskade</div>
+        <div className="trust-chip">Fri rettshjelp · Når tilgjengelig</div>
+        <div className="trust-chip">Oslo sentrum · Stortingsgata 22</div>
+      </div>
     </div>
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────
-export default function Home() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const serif = { fontFamily: "var(--font-cormorant), Georgia, serif" };
-
+function Services() {
+  const [idx, setIdx] = useState<number | null>(0);
+  const s = SERVICES[idx ?? 0];
   return (
-    <div className="bg-[#f6f3ec]">
-
-      {/* ── NAVBAR ───────────────────────────────────────────────────── */}
-      <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#f6f3ec]/96 backdrop-blur-sm border-b border-[#ddd8cc] shadow-[0_1px_8px_rgba(12,26,46,0.06)]"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group">
-            <span className="text-xl font-bold tracking-wide text-[#0c1a2e]" style={serif}>
-              HOLM
+    <section id="tjenester" className="section">
+      <div className="wrap">
+        <div className="section-head">
+          <div className="left">
+            <span className="eyebrow">
+              <span className="dash">—</span>Fagområder
             </span>
-            <span className="w-px h-4 bg-[#a6863e]" />
-            <span className="text-[10px] tracking-[0.22em] uppercase text-[#0c1a2e]/60 font-light">
-              Advokatkontor
-            </span>
-          </a>
-
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            {NAV_ITEMS.map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                className="text-[13px] text-[#0c1a2e]/60 hover:text-[#0c1a2e] transition-colors"
-              >
-                {label}
-              </a>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <a
-            href="#kontakt"
-            className="hidden md:flex items-center px-5 py-2 bg-[#0c1a2e] text-[#f6f3ec] text-[13px] tracking-wide hover:bg-[#162237] transition-colors"
-          >
-            Gratis konsultasjon
-          </a>
-
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Åpne meny"
-            className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8"
-          >
-            <span
-              className={`block w-5 h-[1.5px] bg-[#0c1a2e] origin-center transition-transform duration-200 ${
-                menuOpen ? "translate-y-[6.5px] rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`block w-5 h-[1.5px] bg-[#0c1a2e] transition-opacity duration-200 ${
-                menuOpen ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block w-5 h-[1.5px] bg-[#0c1a2e] origin-center transition-transform duration-200 ${
-                menuOpen ? "-translate-y-[6.5px] -rotate-45" : ""
-              }`}
-            />
-          </button>
+            <Reveal>
+              <h2 className="h2">
+                Seks områder,
+                <br />
+                <em>én advokat</em> hele veien.
+              </h2>
+            </Reveal>
+          </div>
+          <div className="right">
+            Holm Advokatkontor er bevisst holdt lite. Det betyr at saken din
+            behandles av advokaten — ikke en saksbehandler eller et system. Velg
+            et område for å se hvordan vi jobber.
+          </div>
         </div>
 
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="md:hidden bg-[#f6f3ec] border-t border-[#ddd8cc] px-6 py-5 flex flex-col gap-5">
-            {NAV_ITEMS.map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                className="text-sm text-[#0c1a2e]/70 hover:text-[#0c1a2e]"
-              >
-                {label}
-              </a>
-            ))}
-            <a
-              href="#kontakt"
-              onClick={() => setMenuOpen(false)}
-              className="inline-flex items-center justify-center px-6 py-2.5 bg-[#0c1a2e] text-[#f6f3ec] text-sm w-full mt-1"
-            >
-              Gratis konsultasjon
+        <div className="services">
+          <div className="svc-list">
+            {SERVICES.map((sv, i) => {
+              const open = idx === i;
+              return (
+                <div
+                  key={sv.num}
+                  className={`svc-row ${open ? "active" : ""}`}
+                >
+                  <button
+                    type="button"
+                    className="svc-item"
+                    onClick={() => setIdx((prev) => (prev === i ? null : i))}
+                    aria-expanded={open}
+                    aria-controls={`svc-drawer-${sv.num}`}
+                  >
+                    <span className="num">{sv.num}</span>
+                    <span className="title">{sv.title}</span>
+                    <svg
+                      className="chev"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.4}
+                      width={16}
+                      height={16}
+                      aria-hidden="true"
+                    >
+                      <path d="M3 7h8m-3-3 3 3-3 3" />
+                    </svg>
+                  </button>
+                  <div
+                    id={`svc-drawer-${sv.num}`}
+                    className="svc-drawer"
+                    role="region"
+                    aria-hidden={!open}
+                  >
+                    <div className="drawer-inner">
+                      <div className="psub">{sv.sub}</div>
+                      <p className="pbody">{sv.desc}</p>
+                      <ul>
+                        {sv.bullets.map((b) => (
+                          <li key={b}>{b}</li>
+                        ))}
+                      </ul>
+                      <div className="drawer-foot">
+                        <span className="pmeta">{sv.meta}</span>
+                        <a href="#kontakt" className="cta">
+                          Diskuter din sak →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="svc-panel" key={s.num}>
+            <div className="pmeta">{s.meta}</div>
+            <div className="ptitle">{s.title}</div>
+            <div className="psub">{s.sub}</div>
+            <p className="pbody">{s.desc}</p>
+            <ul>
+              {s.bullets.map((b) => (
+                <li key={b}>{b}</li>
+              ))}
+            </ul>
+            <a href="#kontakt" className="cta">
+              Diskuter din sak →
             </a>
           </div>
-        )}
-      </header>
-
-      {/* ── HERO ─────────────────────────────────────────────────────── */}
-      <section className="min-h-screen flex items-center pt-16 overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 py-20 w-full">
-          <div className="grid md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_360px] gap-12 lg:gap-20 items-center">
-
-            {/* Left – editorial text */}
-            <div>
-              <p className="fade-up text-[11px] tracking-[0.32em] uppercase text-[#a6863e] mb-7">
-                Oslo · Erstatning · Arbeidsrett · Familierett
-              </p>
-
-              <h1
-                className="fade-up-d1 font-light leading-[1.06] tracking-tight text-[#0c1a2e] mb-8"
-                style={{
-                  ...serif,
-                  fontSize: "clamp(3.2rem, 6.5vw, 5.5rem)",
-                }}
-              >
-                Din advokat
-                <br />
-                <em className="not-italic" style={{ color: "#a6863e" }}>
-                  for det som
-                </em>
-                <br />
-                virkelig betyr noe.
-              </h1>
-
-              <div className="fade-up-d2 w-14 h-px bg-[#a6863e] mb-7" />
-
-              <p className="fade-up-d2 text-[#0c1a2e]/55 text-[15px] leading-relaxed max-w-md mb-10">
-                Vi bistår privatpersoner i saker mot forsikringsselskaper,
-                arbeidsgivere og NAV. Første konsultasjon er alltid gratis
-                og uforpliktende.
-              </p>
-
-              <div className="fade-up-d3 flex flex-wrap gap-4">
-                <a
-                  href="#kontakt"
-                  className="px-7 py-3 bg-[#0c1a2e] text-[#f6f3ec] text-[13px] tracking-wide hover:bg-[#162237] transition-colors"
-                >
-                  Book gratis konsultasjon
-                </a>
-                <a
-                  href="#tjenester"
-                  className="px-7 py-3 border border-[#0c1a2e]/20 text-[#0c1a2e] text-[13px] tracking-wide hover:border-[#0c1a2e]/50 transition-colors"
-                >
-                  Se tjenestene →
-                </a>
-              </div>
-
-              {/* Stats */}
-              <div className="fade-up-d4 flex flex-wrap gap-8 mt-14 pt-10 border-t border-[#ddd8cc]">
-                {[
-                  { val: "18+", label: "Års erfaring" },
-                  { val: "1 000+", label: "Saker ført" },
-                  { val: "5,0 ★", label: "Snittvurdering" },
-                  { val: "Fri", label: "Rettshjelp" },
-                ].map(({ val, label }) => (
-                  <div key={label}>
-                    <div
-                      className="text-3xl font-light text-[#0c1a2e] leading-none"
-                      style={serif}
-                    >
-                      {val}
-                    </div>
-                    <div className="text-[11px] text-[#0c1a2e]/45 tracking-wide mt-1">
-                      {label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right – dark identity panel */}
-            <div className="hidden md:block">
-              <div
-                className="bg-[#0c1a2e] relative overflow-hidden"
-                style={{ aspectRatio: "3/4" }}
-              >
-                {/* Grid texture */}
-                <div
-                  className="absolute inset-0 opacity-[0.035]"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 0, transparent 48px), repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 0, transparent 48px)",
-                  }}
-                />
-                {/* Diagonal texture */}
-                <div
-                  className="absolute inset-0 opacity-[0.025]"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 32px)",
-                  }}
-                />
-                {/* Large bg monogram */}
-                <div
-                  className="absolute -bottom-4 -right-6 leading-none text-white/[0.04] italic select-none"
-                  style={{ ...serif, fontSize: "14rem", fontWeight: 700 }}
-                >
-                  EH
-                </div>
-
-                {/* Top badge */}
-                <div className="absolute top-8 left-8 right-8">
-                  <div className="w-8 h-px bg-[#a6863e] mb-5" />
-                  <div
-                    className="text-5xl font-light text-white/80 italic"
-                    style={serif}
-                  >
-                    E.H.
-                  </div>
-                </div>
-
-                {/* Bottom info */}
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div
-                    className="text-2xl text-white font-light mb-1"
-                    style={serif}
-                  >
-                    Erik Holm
-                  </div>
-                  <div className="text-[10px] tracking-[0.3em] uppercase text-white/40 mb-4">
-                    Advokat · Oslo sentrum
-                  </div>
-                  <div className="w-6 h-px bg-[#a6863e] mb-4" />
-                  <div className="text-[11px] text-white/40 leading-[1.8]">
-                    Cand.jur. Universitetet i Oslo
-                    <br />
-                    Spesialist i personskadeerstatning
-                    <br />
-                    Medlem av Advokatforeningen
-                  </div>
-                </div>
-              </div>
-
-              {/* Small gold offset accent */}
-              <div className="h-1.5 bg-[#a6863e]" />
-            </div>
-          </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ── SERVICES ─────────────────────────────────────────────────── */}
-      <section id="tjenester" className="bg-white py-24 scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-            <div>
-              <p className="text-[11px] tracking-[0.32em] uppercase text-[#a6863e] mb-3">
-                Tjenester
-              </p>
-              <h2
-                className="font-light text-[#0c1a2e] leading-tight"
-                style={{ ...serif, fontSize: "clamp(1.9rem, 3.5vw, 2.8rem)" }}
-              >
-                Våre tjenester
+function Process() {
+  return (
+    <section id="prosess" className="section">
+      <div className="wrap">
+        <div className="section-head">
+          <div className="left">
+            <span className="eyebrow">
+              <span className="dash">—</span>Prosess
+            </span>
+            <Reveal>
+              <h2 className="h2">
+                Fra første samtale
+                <br />
+                til <em>avsluttet sak</em>.
               </h2>
-            </div>
-            <p className="text-[13px] text-[#0c1a2e]/45 max-w-xs leading-relaxed">
-              Usikker på om vi kan hjelpe? Ta kontakt – første samtale er alltid
-              gratis og uforpliktende.
-            </p>
+            </Reveal>
           </div>
-
-          <div className="grid md:grid-cols-2 border-t border-[#e5e1d8]">
-            {SERVICES.map((svc) => (
-              <div
-                key={svc.num}
-                className="group flex gap-5 py-8 px-4 border-b border-[#e5e1d8] hover:bg-[#f6f3ec] transition-colors"
-              >
-                <span
-                  className="flex-shrink-0 text-[2.25rem] font-light leading-none mt-0.5 text-[#a6863e]/25 group-hover:text-[#a6863e]/55 transition-colors w-12"
-                  style={serif}
-                >
-                  {svc.num}
-                </span>
-                <div>
-                  <h3
-                    className="text-[1.2rem] font-medium text-[#0c1a2e] leading-snug mb-1"
-                    style={serif}
-                  >
-                    {svc.title}
-                  </h3>
-                  <p className="text-[11px] text-[#a6863e] tracking-wide mb-2">
-                    {svc.sub}
-                  </p>
-                  <p className="text-[13px] text-[#0c1a2e]/50 leading-relaxed">
-                    {svc.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="right">
+            Du får én advokat, et tydelig opplegg og skriftlig vurdering før
+            beslutninger tas. Ingen overraskelser — verken i prosess eller i
+            pris.
           </div>
         </div>
-      </section>
-
-      {/* ── WHY US ───────────────────────────────────────────────────── */}
-      <section className="bg-[#f6f3ec] py-24 border-y border-[#ddd8cc]">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-px bg-[#ddd8cc]">
-            {[
-              {
-                n: "01",
-                title: "Personlig oppfølging",
-                text: "Du snakker alltid direkte med advokaten – ikke en assistent eller et saksbehandlingssystem. Vi holder deg oppdatert gjennom hele prosessen.",
-              },
-              {
-                n: "02",
-                title: "Gratis første møte",
-                text: "Vi vurderer saken din uten forpliktelser. Du vet hva vi kan gjøre for deg – og hva det koster – før du bestemmer deg.",
-              },
-              {
-                n: "03",
-                title: "Fri rettshjelp",
-                text: "De fleste sakene våre dekkes av rettshjelpsforsikring eller fri rettshjelp. Vi undersøker dette for deg allerede i det første møtet.",
-              },
-            ].map(({ n, title, text }) => (
-              <div key={n} className="bg-[#f6f3ec] p-10 md:p-12">
-                <div
-                  className="text-5xl font-light text-[#a6863e]/18 mb-7 leading-none"
-                  style={serif}
-                >
-                  {n}
-                </div>
-                <h3
-                  className="text-[1.25rem] font-medium text-[#0c1a2e] mb-3 leading-snug"
-                  style={serif}
-                >
-                  {title}
-                </h3>
-                <p className="text-[13px] text-[#0c1a2e]/50 leading-relaxed">
-                  {text}
-                </p>
-              </div>
-            ))}
-          </div>
+        <div className="process">
+          {PROCESS.map((p) => (
+            <Reveal key={p.n} as="div" className="step">
+              <div className="tick" />
+              <div className="n">{p.n}</div>
+              <h3>{p.t}</h3>
+              <p>{p.d}</p>
+            </Reveal>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ── ABOUT ────────────────────────────────────────────────────── */}
-      <section id="om-oss" className="bg-white py-24 scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-14 lg:gap-20 items-center">
-
-            {/* Photo placeholder */}
-            <div className="relative">
-              <div
-                className="bg-[#0c1a2e] relative overflow-hidden"
-                style={{ aspectRatio: "4/5" }}
-              >
-                {/* Subtle grid */}
-                <div
-                  className="absolute inset-0 opacity-[0.04]"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 0, transparent 56px), repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 0, transparent 56px)",
-                  }}
-                />
-                {/* Diagonal accent */}
-                <div
-                  className="absolute inset-0 opacity-[0.025]"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(135deg, #fff 0, #fff 1px, transparent 0, transparent 36px)",
-                  }}
-                />
-                {/* Large initials */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div
-                    className="text-[9rem] font-light italic leading-none text-white/[0.07] select-none"
-                    style={serif}
-                  >
-                    EH
-                  </div>
-                </div>
-                {/* Bottom name plate */}
-                <div className="absolute bottom-8 left-8 right-8">
-                  <div className="w-10 h-px bg-[#a6863e] mb-4" />
-                  <div className="text-2xl text-white font-light mb-1" style={serif}>
-                    Erik Holm
-                  </div>
-                  <div className="text-[10px] tracking-[0.28em] uppercase text-white/40">
-                    Advokat · Oslo
-                  </div>
-                </div>
-              </div>
-              {/* Offset accent */}
-              <div className="absolute -bottom-3 -right-3 w-20 h-20 border border-[#a6863e]/20 bg-[#a6863e]/6 -z-10" />
+function About() {
+  return (
+    <section id="om" className="section">
+      <div className="wrap">
+        <div className="about">
+          <Reveal className="portrait">
+            <div className="grid" />
+            <div className="tag">— Advokat</div>
+            <div className="ph">[ portrettfoto · 4:5 ]</div>
+            <div className="name">
+              <div className="n">Erik Holm</div>
+              <div className="t">Cand.jur · UiO 2006</div>
             </div>
+          </Reveal>
 
-            {/* Bio */}
-            <div>
-              <p className="text-[11px] tracking-[0.32em] uppercase text-[#a6863e] mb-4">
-                Om advokat Holm
-              </p>
-              <h2
-                className="font-light text-[#0c1a2e] leading-tight mb-5"
-                style={{ ...serif, fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
-              >
-                18 år med mennesker i
+          <div>
+            <span className="eyebrow">
+              <span className="dash">—</span>Om advokaten
+            </span>
+            <Reveal>
+              <h2 className="h2">
+                Atten år med mennesker i
                 <br />
-                <em>krevende livssituasjoner</em>
+                <em>krevende situasjoner.</em>
               </h2>
-              <div className="w-12 h-px bg-[#a6863e] mb-6" />
-              <p className="text-[14px] text-[#0c1a2e]/55 leading-relaxed mb-4">
+            </Reveal>
+            <div className="bio">
+              <p>
                 Erik Holm har siden 2006 representert privatpersoner i saker mot
-                forsikringsselskaper, arbeidsgivere og offentlige myndigheter. Han
-                spesialiserte seg tidlig på personskadeerstatning og har i løpet
-                av karrieren ført over tusen saker – fra enkle forsikringsoppgjør
-                til prinsipielle saker for Høyesterett.
+                forsikringsselskaper, arbeidsgivere og offentlige myndigheter.
+                Han spesialiserte seg tidlig på personskadeerstatning og har
+                ført over tusen saker — fra enkle forsikringsoppgjør til
+                prinsipielle saker i Høyesterett.
               </p>
-              <p className="text-[14px] text-[#0c1a2e]/55 leading-relaxed mb-10">
+              <p>
                 Kontoret er bevisst holdt lite for å sikre at hver klient får
                 personlig og dedikert oppfølging. Erik møter alle klienter selv
-                – fra første samtale til saken er avsluttet.
+                — fra første samtale til saken er avsluttet.
               </p>
-
-              {/* Credentials */}
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  "Cand.jur. UiO 2006",
-                  "Medlem av Advokatforeningen",
-                  "Spesialist i personskade",
-                  "1 000+ saker ført",
-                ].map((cred) => (
-                  <div key={cred} className="flex items-start gap-2.5">
-                    <div className="w-1 h-1 rounded-full bg-[#a6863e] mt-[5px] flex-shrink-0" />
-                    <span className="text-[12px] text-[#0c1a2e]/55">{cred}</span>
-                  </div>
-                ))}
+            </div>
+            <div className="creds">
+              <div>
+                <div className="k">Utdanning</div>
+                <div className="v">Cand.jur. UiO · 2006</div>
+              </div>
+              <div>
+                <div className="k">Medlem</div>
+                <div className="v">Advokatforeningen</div>
+              </div>
+              <div>
+                <div className="k">Spesialisering</div>
+                <div className="v">Personskadeerstatning</div>
+              </div>
+              <div>
+                <div className="k">Volum</div>
+                <div className="v">1&nbsp;000+ saker ført</div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ── TESTIMONIALS ─────────────────────────────────────────────── */}
-      <section id="referanser" className="bg-[#0c1a2e] py-24 scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
-            <div>
-              <p className="text-[11px] tracking-[0.32em] uppercase text-[#a6863e] mb-3">
-                Referanser
-              </p>
-              <h2
-                className="font-light text-white leading-tight"
-                style={{ ...serif, fontSize: "clamp(1.9rem, 3.5vw, 2.8rem)" }}
-              >
-                Klienter sier
+function Results() {
+  return (
+    <section id="resultater" className="section">
+      <div className="wrap">
+        <div className="section-head">
+          <div className="left">
+            <span className="eyebrow">
+              <span className="dash">—</span>Utvalgte resultater
+            </span>
+            <Reveal>
+              <h2 className="h2">
+                Utfall som <em>faktisk</em>
+                <br />
+                betyr noe for klienten.
               </h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <Stars />
-              <span className="text-white/40 text-[12px]">
-                5,0 av 5 · 47 vurderinger
-              </span>
-            </div>
+            </Reveal>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-5">
-            {TESTIMONIALS.map((t) => (
-              <div
-                key={t.name}
-                className="border border-white/10 p-8 hover:border-[#a6863e]/35 transition-colors group"
-              >
-                <div
-                  className="text-5xl leading-none text-[#a6863e]/30 mb-4 group-hover:text-[#a6863e]/50 transition-colors"
-                  style={serif}
-                >
-                  "
-                </div>
-                <p className="text-white/65 text-[14px] leading-relaxed mb-7 italic">
-                  {t.quote}
-                </p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-white text-[14px]">{t.name}</div>
-                    <div className="text-white/40 text-[12px]">{t.location}</div>
-                  </div>
-                  <Stars count={5} size="xs" />
-                </div>
+          <div className="right">
+            Anonymisert utvalg fra de siste årene. Hver sak er individuell —
+            tidligere resultater er ingen garanti, men gir et bilde av hva som
+            er mulig når saken føres godt.
+          </div>
+        </div>
+        <div className="results">
+          {RESULTS.map((r) => (
+            <Reveal key={r.case} as="div" className="result">
+              <div className="cat">
+                <span className="d" />
+                {r.cat}
               </div>
-            ))}
-          </div>
+              <div className="amount num">{r.amount}</div>
+              <div className="desc">{r.desc}</div>
+              <div className="r-footer">
+                <span>{r.case}</span>
+                <span>{r.venue}</span>
+              </div>
+            </Reveal>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* ── CTA BANNER ───────────────────────────────────────────────── */}
-      <section className="bg-[#a6863e] py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2
-            className="font-light text-white leading-tight mb-4"
-            style={{ ...serif, fontSize: "clamp(1.9rem, 4vw, 3.2rem)" }}
-          >
-            Usikker på om du har en sak?
-          </h2>
-          <p className="text-white/80 text-[14px] max-w-sm mx-auto mb-10 leading-relaxed">
-            Første konsultasjon er alltid gratis og uforpliktende. Vi vurderer
-            saken din og forteller deg hva vi kan gjøre for deg.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a
-              href="#kontakt"
-              className="px-8 py-3 bg-white text-[#a6863e] text-[13px] font-medium hover:bg-[#f6f3ec] transition-colors"
-            >
-              Book gratis konsultasjon
-            </a>
-            <a
-              href="tel:+4722334455"
-              className="px-8 py-3 border border-white/40 text-white text-[13px] hover:border-white transition-colors"
-            >
-              Ring +47 22 33 44 55
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CONTACT ──────────────────────────────────────────────────── */}
-      <section id="kontakt" className="bg-white py-24 scroll-mt-16">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-14 lg:gap-20">
-
-            {/* Contact info */}
-            <div>
-              <p className="text-[11px] tracking-[0.32em] uppercase text-[#a6863e] mb-4">
-                Kontakt oss
-              </p>
-              <h2
-                className="font-light text-[#0c1a2e] leading-tight mb-10"
-                style={{ ...serif, fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}
-              >
-                Vi er lett å nå
+function Testimonials() {
+  return (
+    <section id="referanser" className="section">
+      <div className="wrap">
+        <div className="section-head">
+          <div className="left">
+            <span className="eyebrow">
+              <span className="dash">—</span>Klienter
+            </span>
+            <Reveal>
+              <h2 className="h2">
+                Ord fra folk vi har
+                <br />
+                <em>fått gjennom det.</em>
               </h2>
-
-              <div className="space-y-7">
-                {[
-                  { label: "Adresse", val: "Stortingsgata 22, 0161 Oslo" },
-                  { label: "Telefon", val: "+47 22 33 44 55" },
-                  { label: "E-post", val: "post@holmadvokat.no" },
-                  { label: "Åpningstider", val: "Mandag–fredag 08:00–17:00" },
-                ].map(({ label, val }) => (
-                  <div key={label}>
-                    <div className="text-[10px] tracking-[0.28em] uppercase text-[#a6863e] mb-1">
-                      {label}
-                    </div>
-                    <div className="text-[#0c1a2e] text-[14px]">{val}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Map placeholder */}
-              <div
-                className="mt-10 bg-[#f6f3ec] border border-[#ddd8cc] flex items-center justify-center"
-                style={{ height: 200 }}
-              >
-                <div className="text-center">
-                  <div className="text-2xl mb-1.5">📍</div>
-                  <div className="text-[12px] text-[#0c1a2e]/40">
-                    Stortingsgata 22, Oslo sentrum
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Form */}
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[10px] tracking-[0.25em] uppercase text-[#0c1a2e]/45 mb-1.5">
-                    Navn
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Ditt navn"
-                    className="w-full border border-[#ddd8cc] bg-[#f6f3ec] px-4 py-3 text-[13px] text-[#0c1a2e] placeholder:text-[#0c1a2e]/25 focus:outline-none focus:border-[#a6863e] transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] tracking-[0.25em] uppercase text-[#0c1a2e]/45 mb-1.5">
-                    Telefon
-                  </label>
-                  <input
-                    type="tel"
-                    placeholder="+47"
-                    className="w-full border border-[#ddd8cc] bg-[#f6f3ec] px-4 py-3 text-[13px] text-[#0c1a2e] placeholder:text-[#0c1a2e]/25 focus:outline-none focus:border-[#a6863e] transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] tracking-[0.25em] uppercase text-[#0c1a2e]/45 mb-1.5">
-                  E-post
-                </label>
-                <input
-                  type="email"
-                  placeholder="din@epost.no"
-                  className="w-full border border-[#ddd8cc] bg-[#f6f3ec] px-4 py-3 text-[13px] text-[#0c1a2e] placeholder:text-[#0c1a2e]/25 focus:outline-none focus:border-[#a6863e] transition-colors"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] tracking-[0.25em] uppercase text-[#0c1a2e]/45 mb-1.5">
-                  Hva gjelder saken?
-                </label>
-                <select className="w-full border border-[#ddd8cc] bg-[#f6f3ec] px-4 py-3 text-[13px] text-[#0c1a2e] focus:outline-none focus:border-[#a6863e] transition-colors appearance-none">
-                  <option value="">Velg kategori...</option>
-                  <option>Yrkesskade</option>
-                  <option>Trafikkskade</option>
-                  <option>Familierett</option>
-                  <option>Arbeidsrett</option>
-                  <option>NAV-saker</option>
-                  <option>Forsikringssaker</option>
-                  <option>Annet</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-[10px] tracking-[0.25em] uppercase text-[#0c1a2e]/45 mb-1.5">
-                  Beskrivelse
-                </label>
-                <textarea
-                  rows={5}
-                  placeholder="Beskriv saken din kort – vi svarer innen én virkedag."
-                  className="w-full border border-[#ddd8cc] bg-[#f6f3ec] px-4 py-3 text-[13px] text-[#0c1a2e] placeholder:text-[#0c1a2e]/25 focus:outline-none focus:border-[#a6863e] transition-colors resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3.5 bg-[#0c1a2e] text-[#f6f3ec] text-[13px] tracking-wide hover:bg-[#162237] transition-colors"
-              >
-                Send henvendelse — gratis og uforpliktende
-              </button>
-
-              <p className="text-[11px] text-[#0c1a2e]/35 text-center">
-                Vi svarer innen én virkedag. Alle opplysninger behandles
-                konfidensielt.
-              </p>
-            </form>
+            </Reveal>
+          </div>
+          <div className="right">
+            47 vurderinger · snittscore 5,0. Sitatene er gjengitt med tillatelse;
+            navn er forkortet av personvernhensyn.
           </div>
         </div>
-      </section>
-
-      {/* ── FOOTER ───────────────────────────────────────────────────── */}
-      <footer className="bg-[#0c1a2e] pt-16 pb-10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-10 mb-14">
-
-            {/* Brand */}
-            <div className="md:col-span-2">
-              <div className="flex items-center gap-2.5 mb-5">
-                <span className="text-lg font-bold tracking-wide text-white" style={serif}>
-                  HOLM
-                </span>
-                <span className="w-px h-4 bg-[#a6863e]" />
-                <span className="text-[10px] tracking-[0.22em] uppercase text-white/45">
-                  Advokatkontor
-                </span>
+        <div className="testimonials">
+          {TESTIMONIALS.map((t) => (
+            <Reveal key={t.name} as="div" className="testi">
+              <p className="q">{t.q}</p>
+              <div className="who">
+                <div>
+                  <div className="name">{t.name}</div>
+                  <div className="loc">{t.loc}</div>
+                </div>
+                <div className="case">— {t.area}</div>
               </div>
-              <p className="text-[13px] text-white/35 leading-relaxed max-w-xs">
-                Spesialist innen erstatning, arbeidsrett og familierett.
-                Personlig, dedikert juridisk bistand i Oslo siden 2006.
-              </p>
-            </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-            {/* Services */}
-            <div>
-              <div className="text-[10px] tracking-[0.25em] uppercase text-[#a6863e] mb-5">
-                Tjenester
-              </div>
-              <ul className="space-y-2.5">
-                {SERVICES.map((s) => (
-                  <li key={s.num}>
-                    <a
-                      href="#tjenester"
-                      className="text-[12px] text-white/35 hover:text-white/65 transition-colors"
-                    >
-                      {s.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+function ContactForm() {
+  const CATS = [
+    "Yrkesskade",
+    "Trafikkskade",
+    "Familierett",
+    "Arbeidsrett",
+    "NAV-saker",
+    "Forsikringssaker",
+    "Annet",
+  ];
+  const [data, setData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    cat: "",
+    msg: "",
+  });
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [sent, setSent] = useState(false);
 
-            {/* Contact */}
-            <div>
-              <div className="text-[10px] tracking-[0.25em] uppercase text-[#a6863e] mb-5">
-                Kontakt
-              </div>
-              <ul className="space-y-2 text-[12px] text-white/35">
-                <li>Stortingsgata 22</li>
-                <li>0161 Oslo</li>
-                <li className="pt-1">+47 22 33 44 55</li>
-                <li>post@holmadvokat.no</li>
-                <li className="pt-1">Man–fre 08:00–17:00</li>
-              </ul>
-            </div>
+  const errors = useMemo(() => {
+    const e: Record<string, string> = {};
+    if (!data.name.trim()) e.name = "Påkrevd";
+    if (!/^\+?[\d\s]{6,}$/.test(data.phone)) e.phone = "Ugyldig";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Ugyldig";
+    if (!data.cat) e.cat = "Velg ett";
+    if (data.msg.trim().length < 10) e.msg = "Minst 10 tegn";
+    return e;
+  }, [data]);
+
+  const valid = Object.keys(errors).length === 0;
+  const show = (k: string) => touched[k] && errors[k];
+
+  const set = (k: keyof typeof data, v: string) =>
+    setData((d) => ({ ...d, [k]: v }));
+  const markTouched = (k: string) =>
+    setTouched((t) => ({ ...t, [k]: true }));
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setTouched({ name: true, phone: true, email: true, cat: true, msg: true });
+    if (!valid) return;
+    setSent(true);
+  };
+
+  return (
+    <form className="contact-form" onSubmit={submit}>
+      <div className="form-head">
+        <div className="title">Send henvendelse</div>
+        <div className="step">— Svar innen 1 virkedag</div>
+      </div>
+
+      <div className="two-col">
+        <div className={`field ${show("name") ? "invalid" : ""}`}>
+          <label>
+            Navn {show("name") && <span className="err">{errors.name}</span>}
+          </label>
+          <input
+            value={data.name}
+            onChange={(e) => set("name", e.target.value)}
+            onBlur={() => markTouched("name")}
+            placeholder="Fornavn Etternavn"
+          />
+        </div>
+        <div className={`field ${show("phone") ? "invalid" : ""}`}>
+          <label>
+            Telefon{" "}
+            {show("phone") && <span className="err">{errors.phone}</span>}
+          </label>
+          <input
+            value={data.phone}
+            onChange={(e) => set("phone", e.target.value)}
+            onBlur={() => markTouched("phone")}
+            placeholder="+47 …"
+          />
+        </div>
+      </div>
+
+      <div className={`field ${show("email") ? "invalid" : ""}`}>
+        <label>
+          E-post {show("email") && <span className="err">{errors.email}</span>}
+        </label>
+        <input
+          type="email"
+          value={data.email}
+          onChange={(e) => set("email", e.target.value)}
+          onBlur={() => markTouched("email")}
+          placeholder="din@epost.no"
+        />
+      </div>
+
+      <div className={`field ${show("cat") ? "invalid" : ""}`}>
+        <label>
+          Hva gjelder saken?{" "}
+          {show("cat") && <span className="err">{errors.cat}</span>}
+        </label>
+        <div className="category-pills">
+          {CATS.map((c) => (
+            <button
+              type="button"
+              key={c}
+              className={`pill ${data.cat === c ? "active" : ""}`}
+              onClick={() => {
+                set("cat", c);
+                markTouched("cat");
+              }}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className={`field ${show("msg") ? "invalid" : ""}`}>
+        <label>
+          Kort om saken{" "}
+          {show("msg") && <span className="err">{errors.msg}</span>}
+        </label>
+        <textarea
+          value={data.msg}
+          onChange={(e) => set("msg", e.target.value)}
+          onBlur={() => markTouched("msg")}
+          placeholder="Noen setninger om bakgrunn, vedtak og frister — vi svarer innen én virkedag."
+        />
+      </div>
+
+      <div className="form-footer">
+        <div className="fine">
+          Konfidensielt. Vi behandler kun opplysninger nødvendig for å vurdere
+          saken, i henhold til personvernreglene.
+        </div>
+        <button type="submit" className={`submit-btn ${sent ? "ok" : ""}`}>
+          {sent ? (
+            <>
+              <svg
+                width={14}
+                height={14}
+                viewBox="0 0 14 14"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.6}
+              >
+                <path d="M2 7.5l3 3L12 4" />
+              </svg>
+              Mottatt — svar innen 1 virkedag
+            </>
+          ) : (
+            <>
+              Send henvendelse
+              <ArrowIcon />
+            </>
+          )}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+function Contact() {
+  return (
+    <section id="kontakt" className="section">
+      <div className="wrap">
+        <div className="section-head">
+          <div className="left">
+            <span className="eyebrow">
+              <span className="dash">—</span>Kontakt
+            </span>
+            <Reveal>
+              <h2 className="h2">
+                Første samtale
+                <br />
+                <em>er alltid gratis.</em>
+              </h2>
+            </Reveal>
           </div>
+          <div className="right">
+            Ring, skriv eller fyll ut skjemaet. Du får en vurdering av saken, en
+            anbefaling om videre vei, og — hvis du ønsker — et møte på kontoret
+            eller via video.
+          </div>
+        </div>
 
-          {/* Bottom bar */}
-          <div className="border-t border-white/8 pt-8 flex flex-col md:flex-row justify-between gap-4">
-            <p className="text-[11px] text-white/25">
-              © 2025 Holm Advokatkontor AS · Org.nr. 123 456 789
+        <div className="contact-grid">
+          <div className="contact-info">
+            <dl>
+              <div>
+                <dt>Telefon</dt>
+                <dd>
+                  <a href="tel:+4722334455">+47 22 33 44 55</a>
+                </dd>
+              </div>
+              <div>
+                <dt>E-post</dt>
+                <dd>
+                  <a href="mailto:post@holmadvokat.no">post@holmadvokat.no</a>
+                </dd>
+              </div>
+              <div>
+                <dt>Adresse</dt>
+                <dd>
+                  Stortingsgata 22
+                  <br />
+                  0161 Oslo
+                </dd>
+              </div>
+              <div>
+                <dt>Åpningstider</dt>
+                <dd>
+                  Man–fre 08:00–17:00
+                  <br />
+                  <span className="quiet">Utenom: etter avtale</span>
+                </dd>
+              </div>
+              <div>
+                <dt>Responstid</dt>
+                <dd>Innen 1 virkedag</dd>
+              </div>
+            </dl>
+          </div>
+          <ContactForm />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="site">
+      <div className="wrap">
+        <div className="foot-grid">
+          <div className="brand">
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+              <span className="logo-mark">Holm</span>
+              <span className="logo-sub">Advokatkontor · Oslo</span>
+            </div>
+            <p>
+              Personlig, dedikert juridisk bistand innen erstatning, arbeidsrett
+              og familierett. Etablert 2006.
             </p>
-            <div className="flex gap-6">
-              {["Personvern", "Vilkår for bruk"].map((link) => (
-                <a
-                  key={link}
-                  href="#"
-                  className="text-[11px] text-white/25 hover:text-white/55 transition-colors"
-                >
-                  {link}
-                </a>
+          </div>
+          <div>
+            <h4>Tjenester</h4>
+            <ul>
+              {SERVICES.map((s) => (
+                <li key={s.num}>
+                  <a href="#tjenester">{s.title}</a>
+                </li>
               ))}
-            </div>
+            </ul>
+          </div>
+          <div>
+            <h4>Kontoret</h4>
+            <ul>
+              <li>
+                <a href="#om">Om advokaten</a>
+              </li>
+              <li>
+                <a href="#prosess">Prosess</a>
+              </li>
+              <li>
+                <a href="#resultater">Resultater</a>
+              </li>
+              <li>
+                <a href="#referanser">Klienter sier</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4>Kontakt</h4>
+            <ul>
+              <li>Stortingsgata 22</li>
+              <li>0161 Oslo</li>
+              <li>+47 22 33 44 55</li>
+              <li>post@holmadvokat.no</li>
+            </ul>
           </div>
         </div>
-      </footer>
-    </div>
+        <div className="foot-bar">
+          <div>© 2026 Holm Advokatkontor AS · Org.nr. 123 456 789</div>
+          <div className="links">
+            <a href="#">Personvern</a>
+            <a href="#">Vilkår</a>
+            <a href="#">Informasjonskapsler</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function Page() {
+  return (
+    <>
+      <Nav />
+      <Hero />
+      <Trust />
+      <Services />
+      <Process />
+      <About />
+      <Results />
+      <Testimonials />
+      <Contact />
+      <Footer />
+    </>
   );
 }

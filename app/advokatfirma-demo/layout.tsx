@@ -1,26 +1,33 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./styles.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const fraunces = Fraunces({
+  variable: "--ff-display",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
+  axes: ["SOFT", "opsz"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const interTight = Inter_Tight({
+  variable: "--ff-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--ff-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Holm Advokatkontor – Erstatning, arbeidsrett og familierett",
+  title: "Holm Advokatkontor — juridisk bistand der det virkelig betyr noe",
   description:
-    "Spesialist innen erstatningsrett, arbeidsrett og familierett. 18 års erfaring. Første konsultasjon er gratis og uforpliktende. Oslo sentrum.",
+    "Privatpersoner i saker mot forsikringsselskaper, arbeidsgivere og NAV. Samme advokat fra første samtale til saken er avsluttet. Gratis førstesamtale.",
 };
 
 export default function RootLayout({
@@ -29,6 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${cormorant.variable} ${dmSans.variable} demo-advokatfirma-demo`}>{children}</div>
+    <div
+      className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable} demo-advokatfirma-demo`}
+    >
+      {children}
+    </div>
   );
 }
