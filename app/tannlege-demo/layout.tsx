@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./styles.css";
 
-const dmSerif = DM_Serif_Display({
-  variable: "--font-dm-serif",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
   subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -27,6 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`${dmSerif.variable} ${plusJakarta.variable} antialiased min-h-dvh demo-tannlege-demo`}>{children}</div>
+    <div
+      className={`${interTight.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} antialiased min-h-dvh demo-tannlege-demo`}
+    >
+      {children}
+    </div>
   );
 }

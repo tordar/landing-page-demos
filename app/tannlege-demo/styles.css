@@ -1,23 +1,18 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-navy: oklch(0.22 0.05 250);
-  --color-navy-light: oklch(0.30 0.05 250);
-  --color-sky: oklch(0.94 0.02 230);
-  --color-sky-deep: oklch(0.88 0.04 230);
-  --color-mist: oklch(0.97 0.005 250);
-  --color-slate: oklch(0.96 0.005 250);
-  --color-warm: oklch(0.98 0.003 80);
-  --color-text: oklch(0.20 0.04 250);
-  --color-text-mid: oklch(0.45 0.03 250);
-  --color-text-soft: oklch(0.55 0.02 250);
-  --color-accent: oklch(0.55 0.12 220);
-  --color-accent-light: oklch(0.90 0.04 220);
-  --color-border: oklch(0.90 0.01 250);
-  --color-border-light: oklch(0.94 0.005 250);
-  --font-display: var(--font-dm-serif);
-  --font-body: var(--font-plus-jakarta);
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --color-paper: #f7f4ee;
+  --color-panel: #fdfbf6;
+  --color-band: #efeae0;
+  --color-ink: #1a1916;
+  --color-ink-soft: #4a463e;
+  --color-ink-mute: #7a7468;
+  --color-rule: #d9d2c2;
+  --color-accent: #2d6b6b;
+  --color-accent-soft: #dae7e5;
+  --font-sans: var(--font-inter-tight);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 html {
@@ -25,14 +20,24 @@ html {
 }
 
 body {
-  background: var(--color-warm);
-  color: var(--color-text);
-  font-family: var(--font-body), system-ui, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background: var(--color-sky-deep);
-  color: var(--color-navy);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+@keyframes tannlege-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
