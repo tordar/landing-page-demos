@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import {
   Phone,
   Mail,
@@ -68,32 +69,38 @@ const projects = [
   {
     title: "Villa på Eiganes",
     category: "Innvendig",
-    gradient: "from-[#e8d5c4] via-[#f5ebe0] to-[#faf8f5]",
+    image:
+      "https://images.unsplash.com/photo-1615874694520-474822394e73?w=900&q=80&auto=format&fit=crop",
   },
   {
     title: "Næringsbygg Forus",
     category: "Fasade",
-    gradient: "from-[#1a3c8f] via-[#2a52b0] to-[#4a72d0]",
+    image:
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=80&auto=format&fit=crop",
   },
   {
     title: "Enebolig Madla",
     category: "Utvendig",
-    gradient: "from-[#c0583a] via-[#d4896e] to-[#f5ebe0]",
+    image:
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=900&q=80&auto=format&fit=crop",
   },
   {
     title: "Leilighet Storhaug",
     category: "Tapetsering",
-    gradient: "from-[#6b6b6b] via-[#9a9a9a] to-[#d4d0ca]",
+    image:
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=80&auto=format&fit=crop",
   },
   {
     title: "Kontorfellesskap Stavanger sentrum",
     category: "Innvendig",
-    gradient: "from-[#f5ebe0] via-[#e8d5c4] to-[#d4896e]",
+    image:
+      "https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=900&q=80&auto=format&fit=crop",
   },
   {
     title: "Rekkehus Sandnes",
     category: "Utvendig",
-    gradient: "from-[#0f2560] via-[#1a3c8f] to-[#4a72d0]",
+    image:
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=900&q=80&auto=format&fit=crop",
   },
 ];
 
@@ -298,15 +305,23 @@ export default function Page() {
             </div>
           </div>
 
-          {/* Hero image placeholder */}
+          {/* Hero image */}
           <div className="fade-up relative">
-            <div className="aspect-[4/3] w-full overflow-hidden rounded-sm bg-gradient-to-br from-[#e8d5c4] via-[#d4896e] to-[#c0583a]">
-              {/* Layered paint texture effect */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-cobalt/20 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-cream/30 to-transparent" />
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-cobalt/10">
+              <Image
+                src="https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1400&q=80&auto=format&fit=crop"
+                alt="Malerrulle med frisk maling på vegg"
+                fill
+                priority
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 55vw"
+              />
+              {/* Cobalt wash to tie image to palette */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-cobalt/30 via-transparent to-transparent mix-blend-multiply" />
+              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-ink/30 to-transparent" />
               {/* Decorative corner element */}
-              <div className="absolute top-6 left-6 h-16 w-16 border-t-2 border-l-2 border-cream/50" />
-              <div className="absolute bottom-6 right-6 h-16 w-16 border-b-2 border-r-2 border-cream/50" />
+              <div className="absolute top-6 left-6 h-16 w-16 border-t-2 border-l-2 border-cream/60" />
+              <div className="absolute bottom-6 right-6 h-16 w-16 border-b-2 border-r-2 border-cream/60" />
             </div>
             {/* Floating stat badge */}
             <div className="absolute -bottom-4 -left-4 bg-cobalt px-5 py-3 shadow-lg lg:-bottom-6 lg:-left-6">
@@ -419,12 +434,27 @@ export default function Page() {
           <div className="stagger grid gap-6 lg:grid-cols-2">
             {/* Before/After pair 1 */}
             <div className="fade-up grid grid-cols-2 gap-1 overflow-hidden rounded-sm">
-              <div className="relative aspect-[3/2] bg-gradient-to-br from-[#8a7d6b] via-[#9a8e7a] to-[#b5a994]">
-                <span className="absolute top-4 left-4 bg-ink/70 px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cream">
+              <div className="relative aspect-[3/2] overflow-hidden bg-ink-light">
+                <Image
+                  src="https://images.unsplash.com/photo-1585128903994-9788298932a6?w=700&q=80&auto=format&fit=crop"
+                  alt="Stue med slitt overflate før oppussing"
+                  fill
+                  className="object-cover [filter:grayscale(0.55)_sepia(0.12)_brightness(0.92)]"
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                />
+                <div className="absolute inset-0 bg-ink/20" />
+                <span className="absolute top-4 left-4 bg-ink/80 px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cream">
                   Før
                 </span>
               </div>
-              <div className="relative aspect-[3/2] bg-gradient-to-br from-[#faf8f5] via-[#f0ece6] to-[#e8d5c4]">
+              <div className="relative aspect-[3/2] overflow-hidden bg-cream">
+                <Image
+                  src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=700&q=80&auto=format&fit=crop"
+                  alt="Nymalt stue etter oppussing"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                />
                 <span className="absolute top-4 left-4 bg-terracotta px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cream">
                   Etter
                 </span>
@@ -436,12 +466,27 @@ export default function Page() {
 
             {/* Before/After pair 2 */}
             <div className="fade-up grid grid-cols-2 gap-1 overflow-hidden rounded-sm">
-              <div className="relative aspect-[3/2] bg-gradient-to-br from-[#6b6860] via-[#7d7a72] to-[#8a8780]">
-                <span className="absolute top-4 left-4 bg-ink/70 px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cream">
+              <div className="relative aspect-[3/2] overflow-hidden bg-ink-light">
+                <Image
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80&auto=format&fit=crop"
+                  alt="Næringsbygg-fasade med værslitte overflater"
+                  fill
+                  className="object-cover [filter:grayscale(0.6)_brightness(0.85)]"
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                />
+                <div className="absolute inset-0 bg-ink/25" />
+                <span className="absolute top-4 left-4 bg-ink/80 px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cream">
                   Før
                 </span>
               </div>
-              <div className="relative aspect-[3/2] bg-gradient-to-br from-[#1a3c8f] via-[#2a52b0] to-[#4a72d0]">
+              <div className="relative aspect-[3/2] overflow-hidden bg-cobalt/20">
+                <Image
+                  src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=700&q=80&auto=format&fit=crop"
+                  alt="Nymalt næringsbygg-fasade"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                />
                 <span className="absolute top-4 left-4 bg-terracotta px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-cream">
                   Etter
                 </span>
@@ -480,9 +525,14 @@ export default function Page() {
           <div className="stagger grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <div key={project.title} className="fade-up group">
-                <div
-                  className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${project.gradient}`}
-                >
+                <div className="relative aspect-[4/3] overflow-hidden bg-cream-dark">
+                  <Image
+                    src={project.image}
+                    alt={`${project.title} — ${project.category}`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
                   <div className="absolute inset-0 bg-ink/0 transition-all group-hover:bg-ink/10" />
                   <span className="absolute bottom-4 left-4 bg-cream/90 px-3 py-1 font-display text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-ink backdrop-blur-sm">
                     {project.category}
@@ -546,11 +596,19 @@ export default function Page() {
       {/* ── ABOUT ── */}
       <section id="om-oss" className="py-24 lg:py-32">
         <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-20 lg:px-8">
-          {/* Image placeholder */}
+          {/* About image */}
           <div className="fade-up relative">
-            <div className="aspect-[5/4] bg-gradient-to-br from-cobalt via-cobalt-light to-[#4a72d0]">
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 h-20 w-20 border-b-2 border-l-2 border-cream/40" />
+            <div className="relative aspect-[5/4] overflow-hidden bg-cobalt/20">
+              <Image
+                src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1100&q=80&auto=format&fit=crop"
+                alt="Malermester i arbeid med vindusrammer"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 55vw"
+              />
+              <div className="absolute inset-0 bg-cobalt/20 mix-blend-multiply" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/30 to-transparent" />
+              <div className="absolute bottom-6 left-6 h-20 w-20 border-b-2 border-l-2 border-cream/60" />
             </div>
             {/* Floating certification badge */}
             <div className="absolute -right-3 -bottom-3 flex items-center gap-3 bg-cream px-5 py-4 shadow-lg lg:-right-6 lg:-bottom-6">
